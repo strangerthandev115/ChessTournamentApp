@@ -33,7 +33,7 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
+    <link href="../dashboard.css" rel="stylesheet">
   </head>
   <body>
     
@@ -51,27 +51,32 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="tournament.html">
+            <a class="nav-link" aria-current="page" href="../index.html">
               <span data-feather="home"></span>
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="../tournament/tournament.html">
+              <span data-feather="play"></span>
               Tournament
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="inputPlayers.html">
+            <a class="nav-link" href="../inputPlayers/inputPlayers.html">
               <span data-feather="users"></span>
               Input Players
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="prizeMoney.html">
+            <a class="nav-link active" href="../prizeMoney/prizeMoney.html">
               <span data-feather="shopping-cart"></span>
               Prize Money
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="scoreReport.html">
+            <a class="nav-link" href="../scoreReport/scoreReport.html">
               <span data-feather="bar-chart-2"></span>
               Score Report
             </a>
@@ -89,31 +94,16 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Input Players</h1>
+        <h1 class="h2">Prize Money</h1>
       </div>
 
-      <div>
-        <form>
-            <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="First name" aria-label="First name">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="id" aria-label="id">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="rating" aria-label="rating">
-                </div>
-            </div>
-        </form>
-      </div>
+      <!-- content goes header -->
+
+
     </main>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="../dashboard.js"></script>
   </body>
 </html>
