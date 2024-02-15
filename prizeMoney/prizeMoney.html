@@ -44,8 +44,8 @@
     }
   </style>
   
-    <!-- Custom styles for this template -->
-        <link href="../dashboard.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="../dashboard.css" rel="stylesheet">
 </head>
 <body>
 
@@ -106,88 +106,143 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Prize Money</h1>
+        <h1 class="h2" id="prizeMoneyTitle">Prize Money</h1>
       </div>
-
-      <!-- Form for adding players -->
-      <form id="playerForm">
-        <div class="mb-3">
-          <label for="playerName" class="form-label">Player Name</label>
-          <input type="text" class="form-control" id="playerName" required>
-        </div>
-        <div class="mb-3">
-          <label for="playerRank" class="form-label">Player Rank</label>
-          <input type="text" class="form-control" id="playerRank" required>
-        </div>
-        <div class="mb-3">
-          <label for="playerPrize" class="form-label">Player Prize</label>
-          <input type="text" class="form-control" id="playerPrize" required>
-        </div>
-        <button type="button" class="btn btn-primary" onclick="addPlayer()">Add Player</button>
-      </form>
-
-      <!-- Display table with players -->
-      <div class="container mt-4">
-        <table class="table table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th colspan="3" class="text-center">Prize Money</th>
-            </tr>
-            <tr>
-              <th scope="col">Place</th>
-              <th scope="col">Name</th>
-              <th scope="col">Prize</th>
-            </tr>
-          </thead>
-          <tbody id="playerTableBody"></tbody>
-        </table>
-      </div>
-
-    </main>
+<!-- Form for adding totalPrizeFund and totalPlayers information -->
+<form id="playerForm">
+  <div class="mb-3" id="totalPlayersDiv">
+    <label for="totalPlayers" class="form-label">Total Players</label>
+    <input type="number" class="form-control" id="totalPlayers" required>
   </div>
+  <div class="mb-3" id="totalPrizeFundDiv">
+    <label for="totalPrizeFund" class="form-label">Total Prize Fund ($)</label>
+    <input type="number" class="form-control" id="totalPrizeFund" required>
+  </div>
+  <button type="button" class="btn btn-primary" onclick="showPlayerNameFields()">Submit</button>
+</form>
+
+<!-- Display playerName input fields dynamically -->
+<div id="playerNameFields" style="display: none;">
+  <h3 class="mt-4">Enter Player Names:</h3>
+  <form id="playerNamesForm">
+    <!-- Player names input fields will be added dynamically based on totalPlayers count -->
+    <div id="playerNameInputs"></div>
+    <button type="button" class="btn btn-primary mt-2" onclick="addPlayers()">Add Players</button>
+  </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="../dashboard.js"></script>
-  
+<!-- Display table with players -->
+<div class="container mt-4" id="playerTableContainer" style="display: none;">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Place</th>
+        <th scope="col">Name</th>
+        <th scope="col">Prize</th>
+      </tr>
+    </thead>
+    <tbody id="playerTableBody"></tbody>
+  </table>
+</div>
 
 <script>
-  function addPlayer() {
-    var playerName = document.getElementById("playerName").value;
-    var playerRank = document.getElementById("playerRank").value;
-    var playerPrize = document.getElementById("playerPrize").value;
+  var totalPlayers;
 
+  function showPlayerNameFields() {
+    var totalPlayers = parseInt(document.getElementById("totalPlayers").value, 10);
+    var totalPrizeFund = parseFloat(document.getElementById("totalPrizeFund").value);
+
+    // Hide totalPlayers and totalPrizeFund inputs after submission
+    document.getElementById("totalPlayersDiv").style.display = "none";
+    document.getElementById("totalPrizeFundDiv").style.display = "none";
+
+    // Hide the submit button
+    document.getElementById("playerForm").style.display = "none";
+
+    // Display playerName input fields dynamically based on totalPlayers count
+    var playerNameFieldsDiv = document.getElementById("playerNameFields");
+    playerNameFieldsDiv.style.display = "block";
+
+    var playerNameInputsDiv = document.getElementById("playerNameInputs");
+    playerNameInputsDiv.innerHTML = ""; // Clear previous inputs
+
+    for (var i = 1; i <= totalPlayers; i++) {
+      var div = document.createElement("div");
+      div.classList.add("mb-3");
+      div.innerHTML = `
+        <label for="playerName${i}" class="form-label">Player Placement ${i}</label>
+        <input type="text" class="form-control" id="playerName${i}" required>
+      `;
+      playerNameInputsDiv.appendChild(div);
+    }
+  }
+
+  function addPlayers() {
+    var totalPlayers = parseInt(document.getElementById("totalPlayers").value, 10);
     var tableBody = document.getElementById("playerTableBody");
-    var newRow = tableBody.insertRow(tableBody.rows.length);
+    var totalPrizeFund = parseFloat(document.getElementById("totalPrizeFund").value);
 
-    var cell1 = newRow.insertCell(0);
-    var cell2 = newRow.insertCell(1);
-    var cell3 = newRow.insertCell(2);
+    // Clear existing rows in the table body
+    tableBody.innerHTML = "";
 
-    cell1.innerHTML = tableBody.rows.length;
-    cell2.innerHTML = playerName;
-    cell3.innerHTML = '$' + playerPrize;
+    for (var i = 1; i <= totalPlayers; i++) {
+      var playerName = document.getElementById(`playerName${i}`).value;
 
-        // Applying classes based on place
-    if (tableBody.rows.length === 1) {
-      newRow.classList.add("gold");
-    } else if (tableBody.rows.length === 2) {
-      newRow.classList.add("silver");
-    } else if (tableBody.rows.length === 3) {
-      newRow.classList.add("bronze");
+      var newRow = tableBody.insertRow(i - 1); // Use i - 1 to match array indexing
+      var cell1 = newRow.insertCell(0);
+      var cell2 = newRow.insertCell(1);
+      var cell3 = newRow.insertCell(2);
+
+      cell1.innerHTML = i;
+
+      if (i <= 3) {
+        // Prize money calculation for 1st, 2nd, and 3rd places
+        if (i === 1) {
+          cell3.innerHTML = '$' + (totalPrizeFund * 0.5).toFixed(2);
+          newRow.classList.add("gold");
+        } else if (i === 2) {
+          cell3.innerHTML = '$' + (totalPrizeFund * 0.3).toFixed(2);
+          newRow.classList.add("silver");
+        } else {
+          cell3.innerHTML = '$' + (totalPrizeFund * 0.2).toFixed(2);
+          newRow.classList.add("bronze");
+        }
+      } else {
+        // For ranks beyond 3, set prize money to 0
+        cell3.innerHTML = '$0.00';
+      }
+
+      cell2.innerHTML = playerName;
     }
 
-    // Reset the form fields
-    document.getElementById("playerName").value = "";
-    document.getElementById("playerRank").value = "";
-    document.getElementById("playerPrize").value = "";
+    // Hide unnecessary elements
+    document.getElementById("playerNameFields").style.display = "none";
+    document.getElementById("playerTableContainer").style.display = "block";
+
+    // Display the button to create another table
+    var createAnotherTableButton = document.getElementById("createAnotherTableButton");
+    createAnotherTableButton.style.display = "block";
   }
-</script>
+
+  function createAnotherTable() {
+    // Reset form and show necessary elements
+    document.getElementById("totalPlayersDiv").style.display = "block";
+    document.getElementById("totalPrizeFundDiv").style.display = "block";
+    document.getElementById("playerForm").style.display = "block";
+    document.getElementById("playerTableContainer").style.display = "none";
+    document.getElementById("createAnotherTableButton").style.display = "none";
+
+    // Clear totalPlayers and totalPrizeFund values
+    document.getElementById("totalPlayers").value = "";
+    document.getElementById("totalPrizeFund").value = "";
+  }
+  
+  </script>
+
+
+  <button type="button" class="btn btn-primary mt-2" id="createAnotherTableButton" onclick="createAnotherTable()" style="display: none;">Create Another Table</button>
+
 
 </body>
 </html>
+
