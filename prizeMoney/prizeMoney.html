@@ -131,10 +131,14 @@
   </form>
 </div>
 
+
 <!-- Display table with players -->
 <div class="container mt-4" id="playerTableContainer" style="display: none;">
   <table class="table table-bordered">
     <thead class="thead-dark">
+      <tr style="font-size: 1.25rem; font-weight: bold;">
+        <th scope="col" colspan="3">Prize Fund: <span id="totalPrizeFundDisplay"></span></th>
+      </tr>
       <tr>
         <th scope="col">Place</th>
         <th scope="col">Name</th>
@@ -144,6 +148,7 @@
     <tbody id="playerTableBody"></tbody>
   </table>
 </div>
+
 
 <script>
   var totalPlayers;
@@ -181,6 +186,14 @@
     var totalPlayers = parseInt(document.getElementById("totalPlayers").value, 10);
     var tableBody = document.getElementById("playerTableBody");
     var totalPrizeFund = parseFloat(document.getElementById("totalPrizeFund").value);
+
+    // Set the total prize fund display
+    document.getElementById("totalPrizeFundDisplay").textContent = '$' + totalPrizeFund.toFixed(2);
+      // Set the total prize fund display
+    var totalPrizeFundDisplay = document.getElementById("totalPrizeFundDisplay");
+    totalPrizeFundDisplay.textContent = '$' + totalPrizeFund.toFixed(2);
+    totalPrizeFundDisplay.style.fontSize = '1.25rem';
+    totalPrizeFundDisplay.style.fontWeight = 'bold';
 
     // Clear existing rows in the table body
     tableBody.innerHTML = "";
