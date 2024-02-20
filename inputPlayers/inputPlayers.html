@@ -96,31 +96,40 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Input Players</h1>
       </div>
-
-      <div>
-        <form>
-            <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="id" aria-label="id" id="id">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="rating" aria-label="rating" id="rating">
-                </div>
-                <div class="col">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="">Check</button>
-                </div>
-                <div>
-                  <p id="playerStatus"></p>
-                </div>
+      <div class="row">
+        <div class="col-sm-10">
+          <form id="InputPlayersForm">
+              <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
+                  </div>
+                  <div class="col">
+                      <input type="text" class="form-control" placeholder="id" aria-label="id" id="id">
+                  </div>
+              </div>
+          </form>
+          <div class="row"> 
+            <div class="col"> 
+              <div style="display: inline-block">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPlayer()">Add Player</button>
+              </div>
+              <div style="display: inline-block">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteRow()">Delete Row</button>
+              </div>
             </div>
-        </form>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="lookup()">Submit Players</button>
+        </div>
       </div>
+
+      <div id="lookupOutput">
+      </div>
+
     </main>
   </div>
 </div>
