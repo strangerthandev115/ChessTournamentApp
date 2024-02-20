@@ -33,7 +33,7 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="../dashboard.css" rel="stylesheet">
+    <link href="/dashboard.css" rel="stylesheet">
   </head>
   <body>
     
@@ -52,31 +52,31 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="../index.html">
+            <a class="nav-link" aria-current="page" href="/">
               <span data-feather="home"></span>
               Home
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="../tournament/tournament.html">
+            <a class="nav-link" aria-current="page" href="/tournament">
               <span data-feather="play"></span>
               Tournament
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="../inputPlayers/inputPlayers.html">
+            <a class="nav-link active" href="/inputPlayers">
               <span data-feather="users"></span>
               Input Players
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../prizeMoney/prizeMoney.html">
+            <a class="nav-link" href="/prizeMoney">
               <span data-feather="shopping-cart"></span>
               Prize Money
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../scoreReport/scoreReport.html">
+            <a class="nav-link" href="/scoreReport">
               <span data-feather="bar-chart-2"></span>
               Score Report
             </a>
@@ -96,36 +96,45 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Input Players</h1>
       </div>
-
-      <div>
-        <form>
-            <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="id" aria-label="id" id="id">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="rating" aria-label="rating" id="rating">
-                </div>
-                <div class="col">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="lookup()">Check</button>
-                </div>
-                <div>
-                  <p id="playerStatus"></p>
-                </div>
+      <div class="row">
+        <div class="col-sm-10">
+          <form id="InputPlayersForm">
+              <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
+                  </div>
+                  <div class="col">
+                      <input type="text" class="form-control" placeholder="id" aria-label="id" id="id">
+                  </div>
+              </div>
+          </form>
+          <div class="row"> 
+            <div class="col"> 
+              <div style="display: inline-block">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPlayer()">Add Player</button>
+              </div>
+              <div style="display: inline-block">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteRow()">Delete Row</button>
+              </div>
             </div>
-        </form>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="lookup()">Submit Players</button>
+        </div>
       </div>
+
+      <div id="lookupOutput">
+      </div>
+
     </main>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="../dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
 <script src="inputPlayers.js"></script>  
 </body>
 </html>
