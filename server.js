@@ -28,6 +28,11 @@ app.get('/tournament', (req, res) => {
   res.sendFile(path.join(__dirname, 'tournament', 'tournament.html'));
 });
 
+// Route for earchPlayer.html
+app.get('/searchPlayer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'searchPlayer', 'searchPlayer.html'));
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {
