@@ -21,29 +21,41 @@ function lookup() {
     }
 }
 
-//function to add a row to the inputPlayers table
-function addPlayer() {
-    //add a row to the inputPlayers table
-    var div = document.getElementById('InputPlayersForm');
-    var newElement = document.createElement('div');
-    newElement.className = 'row';
-    newElement.id = 'row' + rows;
-    newElement.style = 'margin-top: 5px; margin-bottom: 5px';
+function deleteRow() {
+    //delete a row from the inputPlayers table
+    var parent = document.getElementById('InputPlayersSection');
+    var child = document.getElementById('InputPlayersForm' + (rows - 1));
+    parent.removeChild(child);
+    rows--;
+}
 
-    newElement.innerHTML = '<div class="col">' +
+
+//function to add a row to the inputPlayers table
+function addRow() {
+    //add a row to the inputPlayers table
+    var div = document.getElementById('InputPlayersSection');
+    var newFormElement = document.createElement('form');
+
+    newFormElement.id = 'InputPlayersForm' + rows;
+
+    var newDivElement = document.createElement('div');
+
+    newDivElement.className = 'row';
+    newDivElement.style = 'margin-top: 5px; margin-bottom: 5px';
+
+    newDivElement.innerHTML = '<div class="col">' +
     '<input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname"></div>' +
     '<div class="col"><input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname"></div>' +
     '<div class="col"><input type="text" class="form-control" placeholder="id" aria-label="id" id="id"></div>';
-
-    div.appendChild(newElement);
-
+    
+    newFormElement.appendChild(newDivElement);
+    div.appendChild(newFormElement);
     rows++;
+    console.log('row added. Total Rows: ' + rows);
 }
 
-function deleteRow() {
-    //delete a row from the inputPlayers table
-    var div = document.getElementById('InputPlayersForm');
-    var row = document.getElementById('row' + (rows - 1));
-    div.removeChild(row);
-    rows--;
+function submitPlayers() {
+    for(let i = 0; i < rows; i++) {
+        
+    }
 }

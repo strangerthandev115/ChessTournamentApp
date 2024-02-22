@@ -98,7 +98,8 @@
       </div>
       <div class="row">
         <div class="col-sm-10">
-          <form id="InputPlayersForm">
+          <div id="InputPlayersSection">
+            <form id="InputPlayersForm0">
               <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname">
@@ -110,11 +111,12 @@
                       <input type="text" class="form-control" placeholder="id" aria-label="id" id="id">
                   </div>
               </div>
-          </form>
+            </form>
+          </div>
           <div class="row"> 
             <div class="col"> 
               <div style="display: inline-block">
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPlayer()">Add Player</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addRow()">Add Player</button>
               </div>
               <div style="display: inline-block">
                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteRow()">Delete Row</button>
@@ -123,7 +125,7 @@
           </div>
         </div>
         <div class="col-sm-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="lookup()">Submit Players</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="submitPlayers()">Submit Players</button>
         </div>
       </div>
 
