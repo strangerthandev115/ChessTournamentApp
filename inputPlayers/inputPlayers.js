@@ -44,9 +44,9 @@ function addRow() {
     newDivElement.style = 'margin-top: 5px; margin-bottom: 5px';
 
     newDivElement.innerHTML = '<div class="col">' +
-    '<input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname"></div>' +
-    '<div class="col"><input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname"></div>' +
-    '<div class="col"><input type="text" class="form-control" placeholder="id" aria-label="id" id="id"></div>';
+    '<input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname' + rows + '"></div>' +
+    '<div class="col"><input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname' + rows + '"></div>' +
+    '<div class="col"><input type="text" class="form-control" placeholder="id" aria-label="id" id="id' + rows + '"></div>';
     
     newFormElement.appendChild(newDivElement);
     div.appendChild(newFormElement);
@@ -54,8 +54,28 @@ function addRow() {
     console.log('row added. Total Rows: ' + rows);
 }
 
+//function to submit player data to the server
 function submitPlayers() {
-    for(let i = 0; i < rows; i++) {
+    let fnameString = "fname";
+    let lnameString = "lname";
+    let idString = "id";
+    console.log('submitting players:');
+
+    //create JSON object of players data 
+    var playersData = {};
+    
+    for(var i = 0; i < rows; i++) {
+        var tempfname = fnameString + i;
+        var templname = lnameString + i;
+        var tempid = idString + i;
+        console.log(tempfname + " " + templname + " " + tempid);
         
+        var fname = document.getElementById(tempfname).value;
+        var lname = document.getElementById(templname).value;
+        var id = document.getElementById(tempid).value;
+        var results = fname + " " + lname + " " + id;
+        playersData[i] = results;
     }
+    //send PlayersData to the console
+    console.log(playersData);
 }
