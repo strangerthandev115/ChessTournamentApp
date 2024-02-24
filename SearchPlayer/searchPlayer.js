@@ -1,7 +1,13 @@
+
 function printPlayerDetails() {
     // Get the value entered by the user
     var number = document.getElementById('number').value;
 
+    //guard clause
+    if(number === ""){
+        document.getElementById('playerDetailsOutput').innerHTML = "Please enter a number.";
+        return;
+    }
     // Add quotes around the number
     var quotedNumber = '"' + number + '"';
 
@@ -18,9 +24,16 @@ function printPlayerDetails() {
                 if (columns[0] === quotedNumber) { // Assuming MEM_ID is the first column
                     // Remove quotes from player's data
                     var playerData = rows[i].replace(/"/g, '');
+
+                    //parse id, fname and lname out of the row
+                    var id = columns[0].replace(/"/g, '');
+                    var lname = columns[1].replace(/"/g, '');
+                    var fname = columns[2].replace(/"/g, '');
+
+                    addPlayer(id, fname, lname);
                     
                     // Display the player details
-                    var output = "Row: " + (i) + "<br>Row Data: " + playerData;
+                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname;
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -54,4 +67,29 @@ function displayFirstTenElements() {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+
+function addPlayer(id, fname, lname) {
+    // Create a JSON object to hold the data
+    var results = {
+        "id": id,
+        "fname": fname,
+        "lname": lname
+    };
+
+    console.log(results);
+
+    fetch('http://localhost:3000/searchPlayer', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(results)
+})
+.then(response => response.text())
+.then(data => {
+    console.log(data),
+    document.getElementById('playerDetailsSuccess').innerHTML = "Player Added Successfully!";
+})
+.catch(error => console.error('Error:', error));
 }
