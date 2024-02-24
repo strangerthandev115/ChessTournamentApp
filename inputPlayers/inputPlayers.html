@@ -102,6 +102,11 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Input Players</h1>
       </div>
+      <div class="col-sm-2" style="display: inline-block">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="submitPlayers()">Submit Players</button>
+      </div>
+      <div id="feedback" class="col-sm-2" style="display: inline-block">
+      </div>
       <div class="row">
         <div class="col-sm-10">
           <div id="InputPlayersSection">
@@ -115,6 +120,8 @@
                   </div>
                   <div class="col">
                       <input type="text" class="form-control" placeholder="id" aria-label="id" id="id0">
+                  </div>
+                  <div id="playerDetailsOutput">
                   </div>
               </div>
             </form>
@@ -130,19 +137,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="submitPlayers()">Submit Players</button>
-        </div>
       </div>
-
-      <div class="col-sm-2">
-        <!-- Button to navigate to searchPlayer.html -->
-        <a href="/searchPlayer.html"><button type="button" class="btn btn-sm btn-outline-secondary">Search Players</button></a>
-      </div>
-
-      <div id="lookupOutput">
-      </div>
-
     </main>
   </div>
 </div>

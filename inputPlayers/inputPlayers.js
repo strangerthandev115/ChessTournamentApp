@@ -69,5 +69,51 @@ function submitPlayers() {
 
         //add the json object to the array
         playersData[i] = results;
+
+        checkId = playersData[i].id;
+        //call checkPlayer function to check if players ID is in the database
+        checkPlayer(checkId, i);
     }
+}
+
+function checkPlayer(checkId, i) {
+    // Get the value entered by the user
+    var number = checkId;
+
+    //guard clause
+    if (number === "") {
+        document.getElementById('feedback').innerHTML = "Please enter a player ID.";
+        return;
+    }
+
+    // Add quotes around the number
+    var quotedNumber = '"' + number + '"';
+
+    // Read the CSV file
+    fetch('DBFTOCSV.csv')
+        .then(response => response.text())
+        .then(data => {
+            // Split CSV data into rows
+            var rows = data.split('\n');
+
+            // Search for the number in the MEM_ID column
+            for (var i = 0; i < rows.length; i++) {
+                var columns = rows[i].split(',');
+                if (columns[0] === quotedNumber) { // Assuming MEM_ID is the first column
+                    // Remove quotes from player's data
+                    var playerData = rows[i].replace(/"/g, '');
+                    
+                    // Display the player details
+                    var output = "Row: " + (i) + "<br>Row Data: " + playerData;
+                    document.getElementById('playerDetailsOutput').innerHTML = output;
+                    return; // Exit the loop if a match is found
+                }
+            }
+
+            // If no match is found
+            document.getElementById('playerDetailsOutput').innerHTML = "Player not found.";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }

@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const playersController = require('./playersController');
 
+
+app.use(express.json());
 //routing for all the web pages
-
 app.use(express.static(path.join(__dirname)));
 
 app.get('/', (req, res) => {
@@ -30,9 +32,16 @@ app.get('/tournament', (req, res) => {
   res.sendFile(path.join(__dirname, 'tournament', 'tournament.html'));
 });
 
-// Route for earchPlayer.html
+// Route for searchPlayer.html
 app.get('/searchPlayer', (req, res) => {
   res.sendFile(path.join(__dirname, 'searchPlayer', 'searchPlayer.html'));
+});
+
+//route for data from searchPlayer.js to be sent to the server
+app.post('/searchPlayer', (req, res) => {
+  const playerData = req.body;
+  playersController.receivePlayerData(playerData);
+  res.status(200).send('Player data received successfully');
 });
 
 // Start the server
@@ -40,3 +49,7 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+//routing to controller
+
+
