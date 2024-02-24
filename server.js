@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+//routing for all the web pages
+
 app.use(express.static(path.join(__dirname)));
 
 app.get('/', (req, res) => {
