@@ -25,15 +25,35 @@ function printPlayerDetails() {
                     // Remove quotes from player's data
                     var playerData = rows[i].replace(/"/g, '');
 
-                    //parse id, fname and lname out of the row
-                    var id = columns[0].replace(/"/g, '');
-                    var lname = columns[1].replace(/"/g, '');
-                    var fname = columns[2].replace(/"/g, '');
+                    //parse id, fname, lname, and expDate out of the row
+                    var id = playerData.split(',')[0];
+                    var lname = playerData.split(',')[1];
+                    var fname = playerData.split(',')[2];
+                    var expDate = playerData.split(',')[3];
 
-                    addPlayer(id, fname, lname);
-                    
-                    // Display the player details
-                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname;
+                    //guard clause
+                    if(lname == "INACTIVE ID") {
+                        document.getElementById('playerDetailsOutput').innerHTML = "Inactive ID. Please enter an active ID.";
+                        return; 
+                    }
+
+                    //addPlayer if the date is not expired
+                    if(expired(expDate)) {
+                        //if player is alr in list, do not add player
+                        if(!searchExistingPlayer(id)) {
+                            document.getElementById('playerDetailsOutput').innerHTML = "Player already in list.";
+                            return;
+                        }
+
+                        //add player to the list
+                        addPlayer(id, fname, lname);
+                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player added successfully!";
+                        document.getElementById('playerDetailsOutput').innerHTML = output;
+                        return;
+                    }
+
+                    // if date is expired, display the player details and do not add the player
+                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player not added. ID is expired.";
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -47,6 +67,14 @@ function printPlayerDetails() {
         });
 }
 
+//function to check the expiration date of the player
+function expired(date) {
+    if(date < yyyymmdd()) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 function displayFirstTenElements() {
     // Read the CSV file
@@ -89,7 +117,37 @@ function addPlayer(id, fname, lname) {
 .then(response => response.text())
 .then(data => {
     console.log(data),
-    document.getElementById('playerDetailsSuccess').innerHTML = "Player Added Successfully!";
+    console.log("Player Added Successfully!");
 })
 .catch(error => console.error('Error:', error));
+}
+
+//function from stack overflow to get current date in yyyymmdd format
+function yyyymmdd() {
+    var x = new Date();
+    var y = x.getFullYear().toString();
+    var m = (x.getMonth() + 1).toString();
+    var d = x.getDate().toString();
+    (d.length == 1) && (d = '0' + d);
+    (m.length == 1) && (m = '0' + m);
+    var yyyymmdd = y + m + d;
+    return yyyymmdd;
+}
+
+//function to get list of players from controller
+function getPlayers() {
+    fetch('http://localhost:3000/searchPlayer')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function searchExistingPlayer(id) {
+    if(getPlayers().includes(id)) {
+        return true;
+    } else {   
+        return false;
+    }
 }
