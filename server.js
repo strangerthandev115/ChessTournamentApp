@@ -27,6 +27,11 @@ app.get('/scoreReport', (req, res) => {
   res.sendFile(path.join(__dirname, 'scoreReport', 'scoreReport.html'));
 });
 
+// Route for dbfGenerator.html
+app.get('/dbfGenerator', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dbfGenerator', 'dbfGenerator.html'));
+});
+
 // Route for tournament.html
 app.get('/tournament', (req, res) => {
   res.sendFile(path.join(__dirname, 'tournament', 'tournament.html'));
