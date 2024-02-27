@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -10,160 +10,304 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
-    
-
     <!-- Bootstrap core CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
-      }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .round {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .group {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 20px;
+        }
+
+        .round h2 {
+            margin-top: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        #sliderGroupSize {
+            width: 70%;
+            margin: 20px auto;
+        }
+
+        #roundRobinCheckbox {
+            margin-left: 20px;
+        }
+
+        /* Custom styles for slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 80%;
+            height: 10px;
+            margin: 20px auto;
+            background-color: #007bff; /* Blue color */
+            border-radius: 5px;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ffffff; /* White color */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #ffffff; /* White color */
+            border-radius: 50%;
+            cursor: pointer;
+        }
     </style>
 
-    
+
     <!-- Custom styles for this template -->
     <link href="/dashboard.css" rel="stylesheet">
-  </head>
-  <body>
-    
+</head>
+<body>
+
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="navbar-nav">
-  </div>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
+    <div class="navbar-nav">
+        <span class="text-white">Active Players: <span id="activePlayerCount">0</span></span>
+    </div>
 </header>
 
 <div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">
-              <span data-feather="home"></span>
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/tournament">
-              <span data-feather="play"></span>
-              Tournament
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/inputPlayers">
-              <span data-feather="users"></span>
-              Input Players
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/prizeMoney">
-              <span data-feather="shopping-cart"></span>
-              Prize Money
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/scoreReport">
-              <span data-feather="bar-chart-2"></span>
-              Score Report
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              DBF Generator
-            </a>
-          </li>
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">
+                            <span data-feather="home"></span>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/tournament">
+                            <span data-feather="play"></span>
+                            Tournament
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inputPlayers">
+                            <span data-feather="users"></span>
+                            Input Players
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/prizeMoney">
+                            <span data-feather="shopping-cart"></span>
+                            Prize Money
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/searchPlayer">
+                          <span data-feather="search"></span>
+                          Search Player
+                        </a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scoreReport">
+                            <span data-feather="bar-chart-2"></span>
+                            Score Report
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            DBF Generator
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-        </ul>
-      </div>
-    </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Tournament</h1>
+                <label for="sliderGroupSize">Players per Group:</label>
+                <input type="range" id="sliderGroupSize" min="2" max="20" step="2" value="2" onchange="generateGroupedSchedule(participants)">
+                <span id="groupSizeIndicator"></span>
+                <div class="form-check form-switch" id="roundRobinCheckbox">
+                  <input class="form-check-input" type="checkbox" id="roundRobinToggle" onchange="toggleDoubleRoundRobin()">
+                  <label class="form-check-label" for="roundRobinToggle">Double Round Robin</label>
+              </div>
+            </div>
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Tournament</h1>
-      </div>
-      
-  <!-- Tournament schedule -->
-  <div id="tournamentSchedule" class="row">
-    <!-- Generated schedule will be inserted here -->
-  </div>
-    </main>
-    <script>
-      // Function to generate round-robin schedule based on the number of participants
-      function generateSchedule(participants) {
-        var numPlayers = participants.length;
-        var numRounds = numPlayers;
-        var scheduleHtml = '';
-        var players = participants.slice(); // Copy participants array to avoid modifying original array
-        
-        if (numPlayers % 2 === 1) {
-          // If odd number of players, add a bye player
-          players.push('Player ' + (numPlayers + 1) + ' Bye');
-          numPlayers++;
-        }
-    
-        for (var round = 1; round <= numRounds; round++) {
-          scheduleHtml += '<div class="col">';
-          scheduleHtml += '<h2>Round ' + round + '</h2>';
-          scheduleHtml += '<ul>';
-          
-          for (var i = 0; i < numPlayers / 2; i++) {
-            var player1 = players[i];
-            var player2 = players[numPlayers - 1 - i];
-            var whitePlayer, blackPlayer;
-    
-            // Ensure fairness in assigning white and black
-            if (i % 2 === 0) {
-              whitePlayer = player1;
-              blackPlayer = player2;
-            } else {
-              whitePlayer = player2;
-              blackPlayer = player1;
-            }
-            
-            // Display "Bye" for the bye player
-            if (whitePlayer.includes('Bye')) {
-              scheduleHtml += '<li>' + blackPlayer + ' (Black)' + ' Bye' + '</li>';
-            } else if (blackPlayer.includes('Bye')) {
-              scheduleHtml += '<li>' + whitePlayer + ' (White)' + ' Bye' + '</li>';
-            } else {
-              scheduleHtml += '<li>' + whitePlayer + ' (White) vs ' + blackPlayer + ' (Black)</li>';
-            }
-          }
-          
-          scheduleHtml += '</ul>';
-          scheduleHtml += '</div>';
-          
-          // Rotate players for the next round
-          players.splice(1, 0, players.pop());
-        }
-        
-        document.getElementById('tournamentSchedule').innerHTML = scheduleHtml;
-      }
-    
-      // Example usage: Call generateSchedule function with an array of participant names
-      var participants = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5','Player 6','Player 7'];
-      generateSchedule(participants);
-    </script>
-      <!-- content goes here -->
-    </main>
-  </div>
+            <!-- Tournament schedule -->
+            <div id="tournamentSchedule" class="row">
+                <!-- Generated schedule will be inserted here --> 
+            </div>
+
+            <!-- Second Tournament schedule (Round Robin) -->
+            <div id="roundRobinSchedule" class="row d-none">
+                <!-- Generated round robin schedule will be inserted here -->
+            </div>
+        </main>
+    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-  </body>
+<script>
+function generateSchedule(participants, groupName, startingBoard, switchColors) {
+    var numPlayers = participants.length;
+    var numRounds = numPlayers-1; // Each player plays against every other player once
+    var scheduleHtml = '';
+    var players = participants.slice();
+
+    // Ensure even number of players for scheduling
+    if (numPlayers % 2 === 1) {
+        players.push('Player ' + (numPlayers + 1) + ' Bye');
+        numPlayers++;
+    }
+
+    // Generate schedule for each round
+    for (var round = 1; round <= numRounds; round++) {
+        scheduleHtml += '<div class="round">';
+        scheduleHtml += '<h2>Round ' + round + ' - ' + groupName + '</h2>';
+        scheduleHtml += '<ul>';
+
+        // Generate pairings for each round
+        for (var i = 0; i < numPlayers / 2; i++) {
+            var player1Index = i;
+            var player2Index = (round + i) % (numPlayers - 1); // Rotating player index
+
+            if (player2Index === 0) {
+                player2Index = numPlayers - 1;
+            }
+
+            var player1 = players[player1Index];
+            var player2 = players[player2Index];
+            var whitePlayer, blackPlayer;
+            var boardNumber = startingBoard + i;
+
+            // Alternate colors for each pairing
+            if (switchColors && round % 2 === 0) {
+                whitePlayer = player2;
+                blackPlayer = player1;
+            } else {
+                whitePlayer = player1;
+                blackPlayer = player2;
+            }
+
+            // Display pairings
+            if (whitePlayer.includes('Bye')) {
+                scheduleHtml += '<li>' + blackPlayer + ' (Black) Bye (Board ' + boardNumber + ')' + '</li>';
+            } else if (blackPlayer.includes('Bye')) {
+                scheduleHtml += '<li>' + whitePlayer + ' (White) Bye (Board ' + boardNumber + ')' + '</li>';
+            } else {
+                scheduleHtml += '<li>' + whitePlayer + ' (White) vs ' + blackPlayer + ' (Black) (Board ' + boardNumber + ')' + '</li>';
+            }
+        }
+
+        scheduleHtml += '</ul>';
+        scheduleHtml += '</div>';
+    }
+
+    return scheduleHtml;
+}
+
+
+
+
+    function splitParticipants(participants, groupSize) {
+        var groups = [];
+        var i, j, tempArray;
+        for (i = 0, j = participants.length; i < j; i += groupSize) {
+            tempArray = participants.slice(i, i + groupSize);
+            groups.push(tempArray);
+        }
+        return groups;
+    }
+
+    function generateGroupedSchedule(participants) {
+        var numPlayersPerGroup = parseInt(document.getElementById('sliderGroupSize').value);
+        var groups = splitParticipants(participants, numPlayersPerGroup);
+        var scheduleHtml = '';
+        var boardCounter = 1;
+
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            var groupName = 'Group ' + (i + 1);
+            scheduleHtml += '<div class="group">';
+            scheduleHtml += generateSchedule(group, groupName, boardCounter, false);
+            scheduleHtml += '</div>';
+            // Increment the board counter for the next group
+            boardCounter += numPlayersPerGroup / 2;
+        }
+
+        document.getElementById('tournamentSchedule').innerHTML = scheduleHtml;
+        document.getElementById('activePlayerCount').textContent = participants.length;
+        document.getElementById('groupSizeIndicator').textContent = numPlayersPerGroup;
+
+        // Hide the Round Robin schedule
+        document.getElementById('roundRobinSchedule').classList.add('d-none');
+    }
+
+    function toggleDoubleRoundRobin() {
+        var checkbox = document.getElementById('roundRobinToggle');
+        var roundRobinSchedule = document.getElementById('roundRobinSchedule');
+
+        if (checkbox.checked) {
+            // Show the Double Round Robin schedule
+            roundRobinSchedule.innerHTML = document.getElementById('tournamentSchedule').innerHTML;
+            // Generate Double Round Robin schedule with switched colors
+            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(Black)/g, 'temp');
+            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(White)/g, 'Black');
+            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(temp)/g, 'White');
+            roundRobinSchedule.classList.remove('d-none');
+        } else {
+            // Hide the Double Round Robin schedule
+            roundRobinSchedule.classList.add('d-none');
+        }
+    }
+
+    var participants = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6', 'Player 7', 'Player 8', 'Player 9', 'Player 10', 'Player 11','Player 12'];
+    generateGroupedSchedule(participants);
+</script>
+
+<!-- Feather Icons and Chart.js scripts -->
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+</body>
 </html>

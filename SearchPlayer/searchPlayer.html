@@ -60,7 +60,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/searchPlayer">
+              <a class="nav-link active" href="/searchPlayer">
                 <span data-feather="search"></span>
                 Search Player
               </a>
@@ -98,7 +98,7 @@
         <h1 class="h2">Enter Player Details</h1>
       </div>
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <form id="playerDetailsForm">
               <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                   <div class="col">
@@ -110,13 +110,14 @@
               </div>
           </form>
         </div>
-        <div class="col-sm-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="printPlayerDetails()">Submit</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary" onclick="displayFirstTenElements()">Display First Ten Elements</button>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-sm btn-outline-secondary" style="display: inline-block" onclick="printPlayerDetails()">Search</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" style="display: inline-block" onclick="displayFirstTenElements()">Display First Ten Elements</button>
         </div>
       </div>
       <!-- Display the player details -->
       <div id="playerDetailsOutput"></div>
+      <div id="playerDetailsSuccess"></div>
     </main>
   </div>
 </div>
