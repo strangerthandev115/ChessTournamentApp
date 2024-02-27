@@ -144,8 +144,9 @@ function getPlayers() {
     .catch(error => console.error('Error:', error));
 }
 
-function searchExistingPlayer(id) {
-    if(getPlayers().includes(id)) {
+function searchExistingPlayer(data, id) {
+    //problem here, need to check if the id is in the list of players
+    if(data.includes(id)) {
         return true;
     } else {   
         return false;
