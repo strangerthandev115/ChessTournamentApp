@@ -1,110 +1,94 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Tournament</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333; /* Added for consistency */
         }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
+        /* Header Styles */
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+        .navbar-text {
+            color: #fff;
+        }
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 20px;
+            background-color: #fff;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar-heading {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .nav-link {
+            color: #333;
+        }
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px;
+        }
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 20px; /* Added for spacing */
+        }
+        /* Form and Button Styles */
+        #numPlayersInput {
+            margin-bottom: 10px;
+        }
+        #generateScheduleBtn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Added for hover effect */
+        }
+        #generateScheduleBtn:hover {
+            background-color: #0056b3;
+        }
+        /* Schedule Display Styles */
         .round {
-            display: inline-block;
-            margin-right: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .round-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .schedule-item {
+            margin-bottom: 10px;
         }
 
-        .group {
-            display: inline-block;
-            vertical-align: top;
-            margin-right: 20px;
-        }
-
-        .round h2 {
-            margin-top: 0;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 5px;
-        }
-
-        #sliderGroupSize {
-            width: 70%;
-            margin: 20px auto;
-        }
-
-        #roundRobinCheckbox {
-            margin-left: 20px;
-        }
-
-        /* Custom styles for slider */
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 80%;
-            height: 10px;
-            margin: 20px auto;
-            background-color: #007bff; /* Blue color */
-            border-radius: 5px;
-        }
-
-        input[type=range]:focus {
-            outline: none;
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #ffffff; /* White color */
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        input[type=range]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #ffffff; /* White color */
-            border-radius: 50%;
-            cursor: pointer;
-        }
     </style>
-
-
-    <!-- Custom styles for this template -->
-    <link href="/dashboard.css" rel="stylesheet">
 </head>
 <body>
 
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
-    <div class="navbar-nav">
-        <span class="text-white">Active Players: <span id="activePlayerCount">0</span></span>
+<header class="navbar navbar-dark sticky-top bg-dark p-0 shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand me-0" href="#">Murfreesboro Chess Club</a>
+        <span class="navbar-text">Active Players: <span id="activePlayerCount">0</span></span>
     </div>
 </header>
 
@@ -157,18 +141,8 @@
                     </li>
                 </ul>
             </div>
-        </nav>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Tournament</h1>
-                <label for="sliderGroupSize">Players per Group:</label>
-                <input type="range" id="sliderGroupSize" min="2" max="20" step="2" value="2" onchange="generateGroupedSchedule(participants)">
-                <span id="groupSizeIndicator"></span>
-                <div class="form-check form-switch" id="roundRobinCheckbox">
-                  <input class="form-check-input" type="checkbox" id="roundRobinToggle" onchange="toggleDoubleRoundRobin()">
-                  <label class="form-check-label" for="roundRobinToggle">Double Round Robin</label>
-              </div>
+            <div class="col-md-6">
+                <div id="tournamentSchedule"></div>
             </div>
 
             <!-- Tournament schedule -->
@@ -185,121 +159,84 @@
 </div>
 
 <script>
-function generateSchedule(participants, groupName, startingBoard, switchColors) {
-    var numPlayers = participants.length;
-    var numRounds = numPlayers-1; // Each player plays against every other player once
-    var scheduleHtml = '';
-    var players = participants.slice();
+function generateRoundRobinSchedule(numPlayers) {
+    let schedule = [];
+    let totalRounds = numPlayers - 1;
 
-    // Ensure even number of players for scheduling
     if (numPlayers % 2 === 1) {
-        players.push('Player ' + (numPlayers + 1) + ' Bye');
-        numPlayers++;
+    let byePlayer = numPlayers;
+    for (let round = 1; round <= totalRounds; round++) {
+        schedule[round - 1].push({
+            round,
+            board: numPlayers / 2 + 1,
+            pairing: `Player ${byePlayer} has a bye`
+        });
+        // Assigning bye to a different player for each round
+        byePlayer = (byePlayer % (numPlayers - 1)) + 1;
     }
-
-    // Generate schedule for each round
-    for (var round = 1; round <= numRounds; round++) {
-        scheduleHtml += '<div class="round">';
-        scheduleHtml += '<h2>Round ' + round + ' - ' + groupName + '</h2>';
-        scheduleHtml += '<ul>';
-
-        // Generate pairings for each round
-        for (var i = 0; i < numPlayers / 2; i++) {
-            var player1Index = i;
-            var player2Index = (round + i) % (numPlayers - 1); // Rotating player index
-
-            if (player2Index === 0) {
-                player2Index = numPlayers - 1;
-            }
-
-            var player1 = players[player1Index];
-            var player2 = players[player2Index];
-            var whitePlayer, blackPlayer;
-            var boardNumber = startingBoard + i;
-
-            // Alternate colors for each pairing
-            if (switchColors && round % 2 === 0) {
-                whitePlayer = player2;
-                blackPlayer = player1;
-            } else {
-                whitePlayer = player1;
-                blackPlayer = player2;
-            }
-
-            // Display pairings
-            if (whitePlayer.includes('Bye')) {
-                scheduleHtml += '<li>' + blackPlayer + ' (Black) Bye (Board ' + boardNumber + ')' + '</li>';
-            } else if (blackPlayer.includes('Bye')) {
-                scheduleHtml += '<li>' + whitePlayer + ' (White) Bye (Board ' + boardNumber + ')' + '</li>';
-            } else {
-                scheduleHtml += '<li>' + whitePlayer + ' (White) vs ' + blackPlayer + ' (Black) (Board ' + boardNumber + ')' + '</li>';
-            }
-        }
-
-        scheduleHtml += '</ul>';
-        scheduleHtml += '</div>';
-    }
-
-    return scheduleHtml;
 }
 
 
+    for (let round = 1; round <= totalRounds; round++) {
+        let roundMatches = [];
+        for (let match = 0; match < numPlayers / 2; match++) {
+            let player1 = (round + match) % (numPlayers - 1);
+            let player2 = (numPlayers - 1 - match + round) % (numPlayers - 1);
+            player1 += 1;
+            player2 += 1;
+            if (match === 0) {
+                player2 = numPlayers;
+            }
 
+            // Determine which player is White or Black
+            let white = player1 < player2 ? player1 : player2;
+            let black = player1 < player2 ? player2 : player1;
 
-    function splitParticipants(participants, groupSize) {
-        var groups = [];
-        var i, j, tempArray;
-        for (i = 0, j = participants.length; i < j; i += groupSize) {
-            tempArray = participants.slice(i, i + groupSize);
-            groups.push(tempArray);
+            // For an even round, swap colors
+            if (round % 2 === 0) {
+                [white, black] = [black, white];
+            }
+
+            let board = match + 1;
+            let pairing = `Player ${white} (W) vs Player ${black} (B)`;
+            roundMatches.push({round, board, pairing});
         }
-        return groups;
+        schedule.push(roundMatches);
     }
 
-    function generateGroupedSchedule(participants) {
-        var numPlayersPerGroup = parseInt(document.getElementById('sliderGroupSize').value);
-        var groups = splitParticipants(participants, numPlayersPerGroup);
-        var scheduleHtml = '';
-        var boardCounter = 1;
-
-        for (var i = 0; i < groups.length; i++) {
-            var group = groups[i];
-            var groupName = 'Group ' + (i + 1);
-            scheduleHtml += '<div class="group">';
-            scheduleHtml += generateSchedule(group, groupName, boardCounter, false);
-            scheduleHtml += '</div>';
-            // Increment the board counter for the next group
-            boardCounter += numPlayersPerGroup / 2;
-        }
-
-        document.getElementById('tournamentSchedule').innerHTML = scheduleHtml;
-        document.getElementById('activePlayerCount').textContent = participants.length;
-        document.getElementById('groupSizeIndicator').textContent = numPlayersPerGroup;
-
-        // Hide the Round Robin schedule
-        document.getElementById('roundRobinSchedule').classList.add('d-none');
-    }
-
-    function toggleDoubleRoundRobin() {
-        var checkbox = document.getElementById('roundRobinToggle');
-        var roundRobinSchedule = document.getElementById('roundRobinSchedule');
-
-        if (checkbox.checked) {
-            // Show the Double Round Robin schedule
-            roundRobinSchedule.innerHTML = document.getElementById('tournamentSchedule').innerHTML;
-            // Generate Double Round Robin schedule with switched colors
-            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(Black)/g, 'temp');
-            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(White)/g, 'Black');
-            roundRobinSchedule.innerHTML = roundRobinSchedule.innerHTML.replace(/(temp)/g, 'White');
-            roundRobinSchedule.classList.remove('d-none');
-        } else {
-            // Hide the Double Round Robin schedule
-            roundRobinSchedule.classList.add('d-none');
+    // If there's an odd number of players, add a "bye" for one player in each round
+    if (numPlayers % 2 === 1) {
+        let byePlayer = numPlayers;
+        for (let round = 1; round <= totalRounds; round++) {
+            schedule[round - 1].push({ round, board: numPlayers / 2 + 1, pairing: `Player ${byePlayer} has a bye` });
         }
     }
 
-    var participants = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6', 'Player 7', 'Player 8', 'Player 9', 'Player 10', 'Player 11','Player 12'];
-    generateGroupedSchedule(participants);
+    return schedule;
+}
+
+function displaySchedule(schedule) {
+    let scheduleHtml = '';
+    schedule.forEach((roundMatches, roundIndex) => {
+        scheduleHtml += `<div class="round">
+            <div class="round-title">Round ${roundIndex + 1}</div>`;
+        roundMatches.forEach(match => {
+            scheduleHtml += `<div class="schedule-item">Board ${match.board}: ${match.pairing}</div>`;
+        });
+        scheduleHtml += `</div>`;
+    });
+    document.getElementById('tournamentSchedule').innerHTML = scheduleHtml;
+}
+
+document.getElementById('generateScheduleBtn').addEventListener('click', function() {
+    let numPlayers = parseInt(document.getElementById('numPlayersInput').value, 10);
+    if (!isNaN(numPlayers) && numPlayers > 1) {
+        let schedule = generateRoundRobinSchedule(numPlayers);
+        displaySchedule(schedule);
+    } else {
+        alert("Please enter a valid number of players (greater than 1).");
+    }
+});
 </script>
 
 <!-- Feather Icons and Chart.js scripts -->
