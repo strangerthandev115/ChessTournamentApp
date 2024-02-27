@@ -53,3 +53,14 @@ async function writeTH()
         { name: 'H_SECREC01', type: 'I', size: 255 }
     ];
 }
+
+// This Function calls the functions to create the dbf files
+function createDBFFiles()
+{
+    // Call for thexport.df
+    // writeTH()
+    // Call for tsexport.df
+    // writeTS()
+    // Call for tdexport.df
+    // writeTD()
+}
