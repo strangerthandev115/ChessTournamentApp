@@ -11,7 +11,7 @@ function printPlayerDetails() {
     var quotedNumber = '"' + number + '"';
 
     // Read the CSV file
-    fetch('DBFTOCSV.csv')
+    fetch('DBFTOCSV2.csv')
         .then(response => response.text())
         .then(data => {
             // Split CSV data into rows
