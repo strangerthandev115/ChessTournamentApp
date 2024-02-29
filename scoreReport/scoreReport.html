@@ -1,113 +1,256 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>Chess Tournament</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
-
-    
-
-    <!-- Bootstrap core CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.84.0">
+  <title>Chess Tournament</title>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
+    }
+  </style>
+  <!-- Custom styles for this template -->
+  <link href="/dashboard.css" rel="stylesheet">
+</head>
+<body>
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
 
-    
-    <!-- Custom styles for this template -->
-    <link href="/dashboard.css" rel="stylesheet">
-  </head>
-  <body>
-    
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/index.html">Murfreesboro Chess Club</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="navbar-nav">
-  </div>
-</header>
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+    </div>
+  </header>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">
+                <span data-feather="home"></span>
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/searchPlayer">
+                <span data-feather="search"></span>
+                Search Player
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/addSection">
+                <span data-feather="search"></span>
+                Add Sections
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/tournament">
+                <span data-feather="play"></span>
+                Tournament
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/scoreReport">
+                <span data-feather="bar-chart-2"></span>
+                Score Report
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/prizeMoney">
+                <span data-feather="shopping-cart"></span>
+                Prize Money
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/dbfGenerator">
+                <span data-feather="file"></span>
+                DBF Generator
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  
 
-<div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">
-              <span data-feather="home"></span>
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/tournament">
-              <span data-feather="play"></span>
-              Tournament
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/inputPlayers">
-              <span data-feather="users"></span>
-              Input Players
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/prizeMoney">
-              <span data-feather="shopping-cart"></span>
-              Prize Money
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/searchPlayer">
-              <span data-feather="search"></span>
-              Search Player
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/scoreReport">
-              <span data-feather="bar-chart-2"></span>
-              Score Report
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              DBF Generator
-            </a>
-          </li>
-
-        </ul>
-      </div>
-    </nav>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Score Report</h1>
+          <h1 class="h2">Score Report</h1>
       </div>
-
-      <!-- content goes here -->
+  
+      <!-- Table to display opponents -->
+      <div id="scoreTableContainer">
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Player</th>
+                      <!-- Column headers will be generated dynamically -->
+                      <!-- Empty th for player names -->
+                  </tr>
+              </thead>
+              <tbody id="opponentsTableBody">
+                  <!-- Table body will be generated dynamically -->
+              </tbody>
+          </table>
+      </div>
+      
+      <!-- Save button -->
+      <div class="text-end mt-3">
+        <button id="saveButton" class="btn btn-primary" style="display: none;">Save</button>
+      </div>
     </main>
-  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-  </body>
+<script>
+  const players = ["Player 1", "Player 2", "Player 3","Player 4"]; // Array of player names
+  const num_of_rounds = players.length - 1; // Number of rounds equals the number of players
+  const matchInfo = [
+      ["Player 2", "Player 3","Player 4"], //player[0] plays matchinfo[0][i]
+      ["Player 1", "Player 4","Player 3"], //player[1] plays matchinfo[1][i]
+      ["Player 4", "Player 1","Player 2"], //player[2] plays matchinfo[2][i]
+      ["Player 3", "Player 2","Player 1"] 
+  ]; // Match information for each round
+
+
+function generateOpponentsTable() {
+    const opponentsTableBody = document.getElementById('opponentsTableBody');
+    const tableHeadRow = document.querySelector('#scoreTableContainer table thead tr');
+
+    // Clear previous content
+    opponentsTableBody.innerHTML = '';
+    tableHeadRow.innerHTML = '<th>Player</th>'; // Reset the table headers
+
+    // Generate the column headers
+    for (let i = 0; i < num_of_rounds; i++) {
+        tableHeadRow.innerHTML += '<th>Round ' + (i + 1) + '</th>';
+    }
+
+    // Generate table rows
+    for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        const row = document.createElement('tr');
+        const playerNameCell = document.createElement('td');
+        playerNameCell.textContent = player;
+        row.appendChild(playerNameCell);
+
+        for (let j = 0; j < num_of_rounds; j++) {
+            const roundCell = document.createElement('td');
+            const opponentInput = document.createElement('input');
+            opponentInput.type = 'number';
+            opponentInput.step = '0.5'; // Step can be 0.5 for tie, 1 for win/loss
+            opponentInput.min = '0';
+            opponentInput.max = '1';
+            opponentInput.classList.add('form-control');
+            opponentInput.placeholder = 'vs ' + matchInfo[i][j];
+
+            // Add event listener to fill in corresponding match result
+            opponentInput.addEventListener('input', function(event) {
+                const result = parseFloat(event.target.value);
+                const correspondingOpponentInput = getCorrespondingOpponentInput(i, j);
+                if (correspondingOpponentInput) {
+                    correspondingOpponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
+                }
+            });
+
+            roundCell.appendChild(opponentInput);
+            row.appendChild(roundCell);
+        }
+
+        opponentsTableBody.appendChild(row);
+    }
+}
+
+// Function to get corresponding opponent input
+function getCorrespondingOpponentInput(playerIndex, roundIndex) {
+    const opponentIndex = matchInfo[playerIndex][roundIndex];
+    for (let i = 0; i < players.length; i++) {
+        if (players[i] === opponentIndex) {
+            const opponentRow = document.getElementById('opponentsTableBody').children[i];
+            return opponentRow.children[roundIndex + 1].children[0]; // +1 to skip player name cell
+        }
+    }
+    return null;
+}
+
+
+
+  // Function to check if the table is full
+  function isTableFull() {
+      const inputs = document.querySelectorAll('#opponentsTableBody input');
+      for (let i = 0; i < inputs.length; i++) {
+          if (!inputs[i].value) {
+              return false;
+          }
+      }
+      return true;
+  }
+
+  // Function to handle save button click
+  function handleSaveButtonClick() {
+      // Check if the table is full
+      if (isTableFull()) {
+          // Perform saving operation here
+          saveTableToArray();
+          alert('Table saved successfully!');
+      } else {
+          alert('Please fill in all match results before saving.');
+      }
+  }
+
+  // Function to save the table to an array
+  function saveTableToArray() {
+      const tableData = [];
+      const rows = document.querySelectorAll('#opponentsTableBody tr');
+      rows.forEach(row => {
+          const rowData = [];
+          const cells = row.querySelectorAll('td input');
+          cells.forEach(cell => {
+              rowData.push(cell.value);
+          });
+          tableData.push(rowData);
+      });
+      console.log(tableData); // You can replace this with your desired operation
+  }
+
+  // Show save button when the table is full
+  document.addEventListener('input', function() {
+      const saveButton = document.getElementById('saveButton');
+      if (isTableFull()) {
+          saveButton.style.display = 'block';
+      } else {
+          saveButton.style.display = 'none';
+      }
+  });
+
+  // Add click event listener to the save button
+  document.getElementById('saveButton').addEventListener('click', handleSaveButtonClick);
+
+// Call the function to generate the table
+generateOpponentsTable();
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+</body>
 </html>
