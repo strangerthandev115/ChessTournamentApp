@@ -39,11 +39,12 @@ function printPlayerDetails() {
 
                     //addPlayer if the date is not expired
                     if(expired(expDate)) {
-                        //if player is alr in list, do not add player
-                        if(searchExistingPlayer(id) == true) {
-                            document.getElementById('playerDetailsOutput').innerHTML = "Player already in list.";
-                            return;
-                        }
+                        // TODO cant get this to work, will fix later
+                        // //if player is alr in list, do not add player
+                        // if(searchExistingPlayer(id)) {
+                        //     document.getElementById('playerDetailsOutput').innerHTML = "Player already in list.";
+                        //     return;
+                        // }
 
                         //add player to the list
                         addPlayer(id, fname, lname, rating);
@@ -137,6 +138,7 @@ function yyyymmdd() {
 }
 
 function searchExistingPlayer(id) {
+    found = false;
     fetch('http://localhost:3000/getPlayers')
     .then(response => {
         if (!response.ok) {
@@ -145,33 +147,21 @@ function searchExistingPlayer(id) {
         return response.json();
     })
     .then(data => {
-        //if id is in the list of playeres, return true
-        console.log(data); // This will log the data received from the server
-        for(var i = 0; i < data.length; i++) {
-            if(data[i].id == id) {
-                return true;
-            }
-        }
+        console.log(data);
+        found = searchList(data, id);
     })
     .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
     });
+
+    return found;
 }
 
-//This is an example function gets the list of sample players from the server. You can copy this and fit it to your needs 
-function getPlayers() {
-    fetch('http://localhost:3000/getSamplePlayers')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            //here is where you call a function to process or display the data
-            console.log(data); 
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-        });
+function searchList(data, id) {
+    for(var i = 0; i < data.length; i++) {
+        if(data[i].id == id) {
+            return true;
+        }
+    }
+    return false;
 }
