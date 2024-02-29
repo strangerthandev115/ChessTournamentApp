@@ -1,4 +1,3 @@
-
 function printPlayerDetails() {
     // Get the value entered by the user
     var number = document.getElementById('number').value;
@@ -29,6 +28,7 @@ function printPlayerDetails() {
                     var id = playerData.split(',')[0];
                     var lname = playerData.split(',')[1];
                     var fname = playerData.split(',')[2];
+                    var rating = playerData.split(',')[8];
                     var expDate = playerData.split(',')[3];
 
                     //guard clause
@@ -40,20 +40,21 @@ function printPlayerDetails() {
                     //addPlayer if the date is not expired
                     if(expired(expDate)) {
                         //if player is alr in list, do not add player
-                        if(!searchExistingPlayer(id)) {
+                        if(searchExistingPlayer(id) == true) {
                             document.getElementById('playerDetailsOutput').innerHTML = "Player already in list.";
                             return;
                         }
 
                         //add player to the list
-                        addPlayer(id, fname, lname);
-                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player added successfully!";
+                        addPlayer(id, fname, lname, rating);
+                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Rating: " + rating + "<br>Expiration Date: " + expDate + "<br>" + "Player added successfully!";
                         document.getElementById('playerDetailsOutput').innerHTML = output;
+
                         return;
                     }
 
                     // if date is expired, display the player details and do not add the player
-                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player not added. ID is expired.";
+                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Rating: " + rating + "<br>Expiration Date: " + expDate + "<br>" + "Player not added. ID is expired.";
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -97,12 +98,13 @@ function displayFirstTenElements() {
         });
 }
 
-function addPlayer(id, fname, lname) {
+function addPlayer(id, fname, lname, rating) {
     // Create a JSON object to hold the data
     var results = {
         "id": id,
         "fname": fname,
-        "lname": lname
+        "lname": lname,
+        "rating": rating
     };
 
     console.log(results);
@@ -134,21 +136,42 @@ function yyyymmdd() {
     return yyyymmdd;
 }
 
-//function to get list of players from controller
-function getPlayers() {
-    fetch('http://localhost:3000/searchPlayer')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
+function searchExistingPlayer(id) {
+    fetch('http://localhost:3000/getPlayers')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
     })
-    .catch(error => console.error('Error:', error));
+    .then(data => {
+        //if id is in the list of playeres, return true
+        console.log(data); // This will log the data received from the server
+        for(var i = 0; i < data.length; i++) {
+            if(data[i].id == id) {
+                return true;
+            }
+        }
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
 }
 
-function searchExistingPlayer(data, id) {
-    //problem here, need to check if the id is in the list of players
-    if(data.includes(id)) {
-        return true;
-    } else {   
-        return false;
-    }
+//This is an example function gets the list of sample players from the server. You can copy this and fit it to your needs 
+function getPlayers() {
+    fetch('http://localhost:3000/getSamplePlayers')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            //here is where you call a function to process or display the data
+            console.log(data); 
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
 }

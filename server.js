@@ -49,12 +49,20 @@ app.post('/searchPlayer', (req, res) => {
   res.status(200).send('Player data received successfully');
 });
 
+//route for data from playersController.js to be sent to the client
+app.get('/getSamplePlayers', (req, res) => {
+  const playerData = playersController.sendSamplePlayerData();
+  res.status(200).json(playerData);
+});
+
+//route for data from playersController.js to be sent to the client
+app.get('/getPlayers', (req, res) => {
+  const playerData = playersController.sendPlayerData();
+  res.status(200).json(playerData);
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-//routing to controller
-
-
