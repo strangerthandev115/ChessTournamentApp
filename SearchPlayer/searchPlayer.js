@@ -30,6 +30,7 @@ function printPlayerDetails() {
                     var lname = playerData.split(',')[1];
                     var fname = playerData.split(',')[2];
                     var expDate = playerData.split(',')[3];
+                    var rating = playerData.split(',')[8];
 
                     //guard clause
                     if(lname == "INACTIVE ID") {
@@ -46,14 +47,14 @@ function printPlayerDetails() {
                         }
 
                         //add player to the list
-                        addPlayer(id, fname, lname);
-                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player added successfully!";
+                        addPlayer(id, fname, lname, rating);
+                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>Rating: " + rating + "<br>" + "Player added successfully!";
                         document.getElementById('playerDetailsOutput').innerHTML = output;
                         return;
                     }
 
                     // if date is expired, display the player details and do not add the player
-                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" + "Player not added. ID is expired.";
+                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Expiration Date: " + expDate + "<br>" +  "Rating: " + rating + "<br>Player not added. ID is expired.";
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -97,12 +98,13 @@ function displayFirstTenElements() {
         });
 }
 
-function addPlayer(id, fname, lname) {
+function addPlayer(id, fname, lname, rating) {
     // Create a JSON object to hold the data
     var results = {
         "id": id,
         "fname": fname,
-        "lname": lname
+        "lname": lname,
+        "rating": rating
     };
 
     console.log(results);
