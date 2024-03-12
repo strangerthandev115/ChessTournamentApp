@@ -2,61 +2,29 @@ function printPlayerDetails() {
     // Get the value entered by the user
     var number = document.getElementById('number').value;
 
-    //guard clause
-    if(number === ""){
+    // Guard clause
+    if (number === "") {
         document.getElementById('playerDetailsOutput').innerHTML = "Please enter a number.";
         return;
     }
-    // Add quotes around the number
-    var quotedNumber = '"' + number + '"';
 
-    // Read the CSV file
-    fetch('DBFTOCSV2.csv')
+    // Read the text file
+    fetch('output.txt')
         .then(response => response.text())
         .then(data => {
-            // Split CSV data into rows
+            // Split text data into rows
             var rows = data.split('\n');
 
-            // Search for the number in the MEM_ID column
+            // Search for the number in the first column (MEM_ID)
             for (var i = 0; i < rows.length; i++) {
-                var columns = rows[i].split(',');
-                if (columns[0] === quotedNumber) { // Assuming MEM_ID is the first column
-                    // Remove quotes from player's data
-                    var playerData = rows[i].replace(/"/g, '');
-
-                    //parse id, fname, lname, and expDate out of the row
-                    var id = playerData.split(',')[0];
-                    var lname = playerData.split(',')[1];
-                    var fname = playerData.split(',')[2];
-                    var rating = playerData.split(',')[8];
-                    var expDate = playerData.split(',')[3];
-                    var rating = playerData.split(',')[8];
-
-                    //guard clause
-                    if(lname == "INACTIVE ID") {
-                        document.getElementById('playerDetailsOutput').innerHTML = "Inactive ID. Please enter an active ID.";
-                        return; 
-                    }
-
-                    //addPlayer if the date is not expired
-                    if(expired(expDate)) {
-                        // TODO cant get this to work, will fix later
-                        // //if player is alr in list, do not add player
-                        // if(searchExistingPlayer(id)) {
-                        //     document.getElementById('playerDetailsOutput').innerHTML = "Player already in list.";
-                        //     return;
-                        // }
-
-                        //add player to the list
-                        addPlayer(id, fname, lname, rating);
-                        var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Rating: " + rating + "<br>Expiration Date: " + expDate + "<br>" + "Player added successfully!";
-                        document.getElementById('playerDetailsOutput').innerHTML = output;
-
-                        return;
-                    }
-
-                    // if date is expired, display the player details and do not add the player
-                    var output = "ID: " + id + "<br>Last Name: " + lname + "<br>First Name: " + fname + "<br>Rating: " + rating + "<br>Expiration Date: " + expDate + "<br>" + "Player not added. ID is expired.";
+                var columns = rows[i].split('\t'); // Split row using tabs
+                if (columns[0].trim() === number.trim()) { // Assuming MEM_ID is the first column
+                    // Construct the output with each column on a separate line
+                    output = "<br>";
+                    var output = "Row: " + (i + 1) + "<br>";
+                    columns.forEach(column => {
+                        output += column + "<br>";
+                    });
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -69,6 +37,7 @@ function printPlayerDetails() {
             console.error('Error:', error);
         });
 }
+
 
 //function to check the expiration date of the player
 function expired(date) {
