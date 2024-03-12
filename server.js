@@ -22,6 +22,11 @@ app.get('/prizeMoney', (req, res) => {
   res.sendFile(path.join(__dirname, 'prizeMoney', 'prizeMoney.html'));
 });
 
+// Route for inputPlayers.html
+app.get('/addSection', (req, res) => {
+  res.sendFile(path.join(__dirname, 'addSection', 'addSection.html'));
+});
+
 // Route for scoreReport.html
 app.get('/scoreReport', (req, res) => {
   res.sendFile(path.join(__dirname, 'scoreReport', 'scoreReport.html'));
