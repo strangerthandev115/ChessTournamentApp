@@ -11,7 +11,7 @@ function printPlayerDetails() {
     var quotedNumber = '"' + number + '"';
 
     // Read the CSV file
-    fetch('DBFTOCSV.csv')
+    fetch('DBFTOCSV2.csv')
         .then(response => response.text())
         .then(data => {
             // Split CSV data into rows
@@ -30,6 +30,7 @@ function printPlayerDetails() {
                     var fname = playerData.split(',')[2];
                     var rating = playerData.split(',')[8];
                     var expDate = playerData.split(',')[3];
+                    var rating = playerData.split(',')[8];
 
                     //guard clause
                     if(lname == "INACTIVE ID") {
