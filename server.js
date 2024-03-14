@@ -66,6 +66,18 @@ app.get('/getPlayers', (req, res) => {
   res.status(200).json(playerData);
 });
 
+// Route to update player sections
+app.post('/updatePlayerSections', (req, res) => {
+  const updatedPlayerData = req.body;
+
+  // Assuming updatedPlayerData is an array of objects with 'id' and 'section' properties
+  updatedPlayerData.forEach(updatedPlayer => {
+      playersController.updatePlayerSection(updatedPlayer.id, updatedPlayer.section);
+  });
+
+  res.status(200).send('Player sections updated successfully');
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {

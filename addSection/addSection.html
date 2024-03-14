@@ -1,113 +1,334 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>Chess Tournament</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.84.0">
+  <title>Chess Tournament</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
-    
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <!-- Bootstrap core CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
+    }
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
+    /* Style for section containers */
+    .section-container {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+    }
 
-    
-    <!-- Custom styles for this template -->
-    <link href="/dashboard.css" rel="stylesheet">
-  </head>
-  <body>
-    
+    /* Style for section headers */
+    .section-container h2 {
+        margin-bottom: 10px;
+        font-size: 1.4em;
+        color: #333;
+    }
+
+    /* Style for player list items */
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 12px;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style for section select dropdown */
+    .section-select {
+        width: 150px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        background-color: #fff;
+        color: #495057;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    /* Style for section select dropdown on hover */
+    .section-select:hover {
+        border-color: #b8babc;
+    }
+
+    /* Style for section select dropdown when focused */
+    .section-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Style for section select dropdown options */
+    .section-select option {
+        padding: 0.5em;
+        background-color: #fff;
+    }
+
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link href="/dashboard.css" rel="stylesheet">
+</head>
+<body>
+  
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/index.html">Murfreesboro Chess Club</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="navbar-nav">
-  </div>
+<a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/index.html">Murfreesboro Chess Club</a>
+<button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="navbar-nav">
+</div>
 </header>
 
 <div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">
-              <span data-feather="home"></span>
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/searchPlayer">
-              <span data-feather="search"></span>
-              Search Player
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/addSection">
-              <span data-feather="search"></span>
-              Add Sections
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/tournament">
-              <span data-feather="play"></span>
-              Tournament
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/scoreReport">
-              <span data-feather="bar-chart-2"></span>
-              Score Report
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/prizeMoney">
-              <span data-feather="shopping-cart"></span>
-              Prize Money
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dbfGenerator">
-              <span data-feather="file"></span>
-              DBF Generator
-            </a>
-          </li>
+<div class="row">
+  <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">
+            <span data-feather="home"></span>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/searchPlayer">
+            <span data-feather="search"></span>
+            Search Player
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/addSection">
+            <span data-feather="search"></span>
+            Add Sections
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/tournament">
+            <span data-feather="play"></span>
+            Tournament
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/scoreReport">
+            <span data-feather="bar-chart-2"></span>
+            Score Report
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/prizeMoney">
+            <span data-feather="shopping-cart"></span>
+            Prize Money
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dbfGenerator">
+            <span data-feather="file"></span>
+            DBF Generator
+          </a>
+        </li>
 
-        </ul>
-      </div>
-    </nav>
+      </ul>
+    </div>
+  </nav>
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Score Report</h1>
-      </div>
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Add Sections</h1>
+    </div>
+    <div>
+      <label for="sectionCount">Number of Sections:</label>
+      <input type="number" id="sectionCount" min="1" max="10" value="1">
+      <button onclick="updateSectionCount()">Update</button>
+    </div>
+    <div id="playersList"></div>
+    <button onclick="savePlayerSections()">Save</button>
 
-      <!-- content goes here -->
-    </main>
-  </div>
+  </main>
+</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-  </body>
+<script>
+  let sections = 1; // Set the start nu of sections to 1
+  let players = []; // Declare players array
+
+// Function to update the number of sections
+function updateSectionCount() {
+    const sectionCountInput = document.getElementById('sectionCount');
+    const newSectionCount = parseInt(sectionCountInput.value);
+
+    // Update the 'sections' variable
+    sections = newSectionCount;
+
+    // Redisplay the players based on the updated section count
+    displayPlayers();
+}
+
+
+// Function to display players based on the selected number of sections
+// Function to display players based on the selected number of sections
+function displayPlayers() {
+    const playersList = document.getElementById('playersList');
+    playersList.innerHTML = ''; // Clear previous content
+
+    // Sort players by rating
+    players.sort((a, b) => b.rating - a.rating); // Sort in descending order
+
+    // Loop through each section
+    for (let i = 0; i < sections; i++) {
+        const sectionContainer = document.createElement('div');
+        sectionContainer.classList.add('section-container');
+        playersList.appendChild(sectionContainer);
+
+        const sectionHeader = document.createElement('h2');
+        sectionHeader.textContent = `Section ${i + 1}`;
+        sectionContainer.appendChild(sectionHeader);
+
+        const sectionPlayers = document.createElement('ul');
+        sectionPlayers.classList.add('list-group');
+        sectionContainer.appendChild(sectionPlayers);
+
+        // Display players in the current section
+        for (const player of players) {
+            // Check if the player belongs to the current section or is unrated
+            if (player.section === (i + 1)) {
+                const rating = player.rating === 9999 ? 'Unrated' : player.rating; // Check for unrated players
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.textContent = `${player.fname} ${player.lname} - ${rating}`;
+
+                // Add dropdown menu for player to select section
+                const selectSection = document.createElement('select');
+                selectSection.classList.add('form-select', 'section-select');
+                selectSection.addEventListener('change', function(event) {
+                    assignPlayerToSection(player, event.target.value);
+                });
+
+                // Add options for each section
+                for (let j = 1; j <= sections; j++) {
+                    const option = document.createElement('option');
+                    option.value = j;
+                    option.textContent = `Section ${j}`;
+                    selectSection.appendChild(option);
+                }
+
+                // Set the selected option to the current section
+                selectSection.value = player.section;
+
+                listItem.appendChild(selectSection);
+                sectionPlayers.appendChild(listItem);
+            }
+        }
+    }
+}
+
+
+// Function to assign player to a specific section
+function assignPlayerToSection(player, sectionNumber) {
+    // Update the player's section property
+    player.section = parseInt(sectionNumber);
+
+    // Redisplay the players based on the updated sections
+    displayPlayers();
+}
+
+// Fetch sample player data
+fetch('/getSamplePlayers')
+    .then(response => response.json())
+    .then(data => {
+        // Set the players array to the received sample players data
+        players = data;
+        // Determine the maximum section number from player data
+        let maxSection = 1; // Default to 1 if no players have a section assigned
+        players.forEach(player => {
+            if (player.section !== '' && parseInt(player.section) > maxSection) {
+                maxSection = parseInt(player.section);
+            }
+        });
+        // Set the initial value of 'sections' to the maximum section number
+        sections = maxSection;
+
+        // Now initialize the 'section' property for each player to their respective sections
+        players.forEach(player => {
+            if (player.section === '') { 
+                // If section is empty, set it to 1 by default
+                player.section = 1;
+            } else {
+                // Convert section to number if it's a string
+                player.section = parseInt(player.section);
+            }
+        });
+
+        // Update the number input field attributes
+        const sectionCountInput = document.getElementById('sectionCount');
+        sectionCountInput.min = maxSection; // Set the maximum value
+        sectionCountInput.value = maxSection; // Set the default value to the maximum section number
+        
+        // Now you can proceed with displaying the players based on the initial section amount
+        displayPlayers();
+    })
+    .catch(error => console.error('Error fetching sample player data:', error));
+
+
+
+
+
+    function savePlayerSections() {
+    // Create an array to hold updated player data
+    const updatedPlayers = [];
+
+    // Loop through the players
+    players.forEach(player => {
+        // Push each player's updated data to the array
+        updatedPlayers.push({
+            id: player.id,
+            section: player.section
+        });
+    });
+
+    // Send a POST request with the updated player data
+    fetch('/updatePlayerSections', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedPlayers)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Player sections updated successfully');
+        } else {
+            console.error('Failed to update player sections');
+        }
+    })
+    .catch(error => console.error('Error updating player sections:', error));
+}
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+</body>
 </html>
