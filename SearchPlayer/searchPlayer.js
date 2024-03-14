@@ -25,6 +25,14 @@ function printPlayerDetails() {
                     columns.forEach(column => {
                         output += column + "<br>";
                     });
+                    console.log(columns[0] + " " + columns[1] + " " + columns[2] + " " + columns[3] + " " + columns[4] + " " + columns[5] + " " + columns[6] + " " + columns[7] + " " + columns[8]);
+                    var id = columns[0];
+                    var name = columns[1];
+                    var partsOfStr = name.split(',');
+                    lname = partsOfStr[0];
+                    fname = partsOfStr[1];
+                    var rating = columns[7];
+                    addPlayer(id, fname, lname, rating);
                     document.getElementById('playerDetailsOutput').innerHTML = output;
                     return; // Exit the loop if a match is found
                 }
@@ -71,6 +79,10 @@ function displayFirstTenElements() {
 
 function addPlayer(id, fname, lname, rating) {
     // Create a JSON object to hold the data
+    if(rating == "" || rating == "U") {
+        rating = '9999';
+    }
+
     var results = {
         "id": id,
         "fname": fname,
