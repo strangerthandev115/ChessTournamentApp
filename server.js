@@ -78,6 +78,18 @@ app.post('/updatePlayerSections', (req, res) => {
   res.status(200).send('Player sections updated successfully');
 });
 
+app.post('/updatePlayerScoreReports', (req, res) => {
+  const updatedPlayerData = req.body;
+
+  // Call the updatePlayerScoreReport function from playersController
+  updatedPlayerData.forEach(updatedPlayer => {
+    playersController.updatePlayerScoreReport(updatedPlayer.id, updatedPlayer.scoreReport);
+});
+
+
+  res.status(200).send('Player score reports updated successfully');
+});
+
 // Start the server
 const port = 3000;
 app.listen(port, () => {
