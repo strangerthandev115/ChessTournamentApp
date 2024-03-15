@@ -120,28 +120,34 @@
 </div>
 
 <script>
-  const players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5"]; // Array of player names
-  const num_of_rounds = players.length - 1; // Number of rounds equals the number of players
-  const matchInfo = [
-      ["Player 2", "Bye"     , "Player 5", 'Player 4'], //player[0] plays matchinfo[0][i]
-      ["Player 1", "Player 3", "Player 4", 'Bye'     ], //player[1] plays matchinfo[1][i]
-      ["Player 4", "Player 2", "Bye"     , 'Player 5'], //player[2] plays matchinfo[2][i]
-      ["Player 3", "Player 5", "Player 2", 'Player 1'],
-      ["Bye"     , "Player 4", "Player 1", 'Player 3']
-      //player[0] plays matchinfo[0][i]
-  ]; // Match information for each round
+  let players = []; // Array of player names
+  let num_of_rounds = 0; // Number of rounds equals the number of players -1
+  let matchInfo = []; // Match information for each round
 
-  // Fetch sample player data
   fetch('/getSamplePlayers')
-    .then(response => response.json())
-    .then(data => {
-      // Set the players array to the received sample players data
-      const players = data;
-      // Now you can proceed with generating the opponents' table
-      generateOpponentsTable(players);
-    })
-    .catch(error => console.error('Error fetching sample player data:', error));
+  .then(response => response.json())
+  .then(data => {
+    players = data;
+    num_of_rounds = players.length - 1;
 
+    for (let i = 0; i < players.length; i++) {
+      matchInfo.push(players[i].matchInfo);
+    }
+
+    // Now you have both players data and matchInfo
+    // Convert matchInfo IDs to opponent names
+    matchInfo = matchInfo.map(roundMatches => roundMatches.map(opponentId => {
+      if (opponentId === 'Bye') {
+        return 'Bye'; // Handle 'Bye' case separately
+      } else {
+        const opponent = players.find(player => player.id === opponentId);
+        return opponent ? `${opponent.fname} ${opponent.lname}` : ''; // Concatenate first name and last name
+      }
+    }));
+
+    generateOpponentsTable(players);
+  })
+  .catch(error => console.error('Error fetching sample player data:', error));
 
 
     
@@ -160,43 +166,53 @@ function generateOpponentsTable(players) {
 
   // Generate table rows
   for (let i = 0; i < players.length; i++) {
-    const player = players[i];
-    const row = document.createElement('tr');
-    const playerNameCell = document.createElement('td');
-    playerNameCell.textContent = player.fname + ' ' + player.lname; // Concatenate first name and last name
-    row.appendChild(playerNameCell);
+  const player = players[i];
+  const row = document.createElement('tr');
+  const playerNameCell = document.createElement('td');
+  playerNameCell.textContent = player.fname + ' ' + player.lname; // Concatenate first name and last name
+  row.appendChild(playerNameCell);
 
-    for (let j = 0; j < num_of_rounds; j++) {
-      const roundCell = document.createElement('td');
-      const opponentInput = document.createElement('input');
-      opponentInput.type = 'number';
-      opponentInput.step = '0.5'; // Step can be 0.5 for tie, 1 for win/loss
-      opponentInput.min = '0';
-      opponentInput.max = '1';
-      opponentInput.classList.add('form-control');
-      // Check if matchInfo is 'Bye'
-      if (matchInfo[i][j] === 'Bye') {
-        opponentInput.value = 'Bye';
-        opponentInput.disabled = true; // Disable input if it's 'Bye'
-      } else {
-        opponentInput.placeholder = 'vs ' + matchInfo[i][j];
-      }
-
-      // Add event listener to fill in corresponding match result
-      opponentInput.addEventListener('input', function(event) {
-        const result = parseFloat(event.target.value);
-        const correspondingOpponentInput = getCorrespondingOpponentInput(i, j);
-        if (correspondingOpponentInput) {
-          correspondingOpponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
-        }
-      });
-
-      roundCell.appendChild(opponentInput);
-      row.appendChild(roundCell);
+  for (let j = 0; j < num_of_rounds; j++) {
+    const roundCell = document.createElement('td');
+    const opponentInput = document.createElement('input');
+    opponentInput.type = 'number';
+    opponentInput.step = '0.5'; // Step can be 0.5 for tie, 1 for win/loss
+    opponentInput.min = '0';
+    opponentInput.max = '1';
+    opponentInput.classList.add('form-control');
+    
+    let opponentId = matchInfo[i][j];
+    if (opponentId !== 'Bye') {
+      opponentPlayer = players.find(player => player.id === opponentId);
+      opponentInput.placeholder = opponentPlayer ? 'vs ' + opponentPlayer.fname + ' ' + opponentPlayer.lname : '';
+    } else {
+      opponentInput.value = 'Bye';
+      opponentInput.disabled = true; // Disable input if it's 'Bye'
     }
 
-    opponentsTableBody.appendChild(row);
+    if (player.scoreReport.length > j) {
+        opponentInput.value = player.scoreReport[j];
+      }
+
+    // Add event listener to fill in corresponding match result
+    opponentInput.addEventListener('input', function(event) {
+      const result = parseFloat(event.target.value);
+      const correspondingOpponentInput = getCorrespondingOpponentInput(i, j);
+      if (correspondingOpponentInput) {
+        correspondingOpponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
+      }
+    });
+
+    roundCell.appendChild(opponentInput);
+    row.appendChild(roundCell);
   }
+
+
+
+
+  opponentsTableBody.appendChild(row);
+}
+
 }
 
 
@@ -229,50 +245,66 @@ function isTableFull() {
     return true;
 }
 
+function handleSaveButtonClick() {
+  // Check if the table is full
+  if (isTableFull()) {
+    // Update player score reports
+    updatePlayerScoreReport();
 
-
-
-  // Function to handle save button click
-  function handleSaveButtonClick() {
-      // Check if the table is full
-      if (isTableFull()) {
-          // Perform saving operation here
-          saveTableToArray();
-          alert('Table saved successfully!');
+    // Send a POST request to update player data
+    fetch('/updatePlayerScoreReports', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(players) // Send the players array
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.text();
       } else {
-          alert('Please fill in all match results before saving.');
+        throw new Error('Failed to update player score reports');
       }
+    })
+    .then(message => {
+      alert(message); // Show success message
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Failed to update player score reports');
+    });
+  } else {
+    alert('Please fill in all match results before saving.');
   }
+}
 
-  // Function to save the table to an array
-  function saveTableToArray() {
-      const tableData = [];
-      const rows = document.querySelectorAll('#opponentsTableBody tr');
-      rows.forEach(row => {
-          const rowData = [];
-          const cells = row.querySelectorAll('td input');
-          cells.forEach(cell => {
-              rowData.push(cell.value);
-          });
-          tableData.push(rowData);
-      });
-      console.log(tableData); // You can replace this with your desired operation
+
+  // Function to update player score reports
+  function updatePlayerScoreReport() {
+    const tableRows = document.querySelectorAll('#opponentsTableBody tr');
+    tableRows.forEach((row, index) => {
+      const playerName = row.querySelector('td').textContent; // Get player name
+      const matchResults = Array.from(row.querySelectorAll('input')).map(input => input.value); // Get match results
+      players[index].scoreReport = matchResults; // Update player score report in the players array
+    });
+    console.log(players);
   }
 
   // Show save button when the table is full
   document.addEventListener('input', function() {
-      const saveButton = document.getElementById('saveButton');
-      if (isTableFull()) {
-          saveButton.style.display = 'block';
-      } else {
-          saveButton.style.display = 'none';
-      }
+    const saveButton = document.getElementById('saveButton');
+    if (isTableFull()) {
+      saveButton.style.display = 'block';
+    } else {
+      saveButton.style.display = 'none';
+    }
   });
-  generateOpponentsTable();
 
   // Add click event listener to the save button
   document.getElementById('saveButton').addEventListener('click', handleSaveButtonClick);
 
+  // Call generateOpponentsTable after defining the event listeners
+  generateOpponentsTable();
 </script>
 
 

@@ -298,6 +298,7 @@ fetch('/getSamplePlayers')
     // Create an array to hold updated player data
     const updatedPlayers = [];
 
+
     // Loop through the players
     players.forEach(player => {
         // Push each player's updated data to the array
@@ -317,7 +318,7 @@ fetch('/getSamplePlayers')
     })
     .then(response => {
         if (response.ok) {
-            console.log('Player sections updated successfully');
+            alert('Player sections updated successfully');
         } else {
             console.error('Failed to update player sections');
         }
