@@ -6,8 +6,8 @@ let samplePlayers = [
         lname: "Doe",
         rating: 1800,
         section: '',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000010','10000009','10000008','10000007','10000006','10000005','10000004','10000003','10000002'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000002,
@@ -15,8 +15,8 @@ let samplePlayers = [
         lname: "Smith",
         rating: 2000,
         section: '1',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000009','10000007','10000005','10000003','10000010','10000008','10000006','10000004','10000001'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000003,
@@ -24,8 +24,8 @@ let samplePlayers = [
         lname: "Johnson",
         rating: 1700,
         section: '2',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000008','10000006','10000004','10000002','10000009','10000007','10000005','10000001','10000010'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000004,
@@ -33,26 +33,26 @@ let samplePlayers = [
         lname: "Williams",
         rating: 1900,
         section: '3',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000007','10000005','10000003','10000010','10000008','10000006','10000001','10000002','10000009'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000005,
         fname: "David",
         lname: "Brown",
         rating: 1600,
-        section: '',
-        matchInfo: [],
-        scoreReport: []
+        section: '3',
+        matchInfo: ['10000006','10000004','10000002','10000009','10000007','10000001','10000003','10000010','10000008'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000006,
         fname: "Emily",
         lname: "Taylor",
         rating: 2100,
-        section: '',
-        matchInfo: [],
-        scoreReport: []
+        section: '2',
+        matchInfo: ['10000005','10000003','10000010','10000008','10000001','10000004','10000002','10000009','10000007'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000007,
@@ -60,8 +60,8 @@ let samplePlayers = [
         lname: "Anderson",
         rating: 1750,
         section: '',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000004','10000002','10000009','10000001','10000005','10000003','10000010','10000008','10000006'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000008,
@@ -69,8 +69,8 @@ let samplePlayers = [
         lname: "Martinez",
         rating: 1850,
         section: '',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000003','10000010','10000001','10000006','10000004','10000002','10000009','10000007','10000005'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000009,
@@ -78,8 +78,8 @@ let samplePlayers = [
         lname: "Thomas",
         rating: 9999,
         section: '',
-        matchInfo: [],
-        scoreReport: []
+        matchInfo: ['10000002','10000001','10000007','10000005','10000003','10000010','10000008','10000006','10000004'],
+        scoreReport: [0,0,0,0,0,0,0,0,0]
     },
     {
         id: 10000010,
@@ -87,7 +87,7 @@ let samplePlayers = [
         lname: "Garcia",
         rating: 2050,
         section: '',
-        matchInfo: [],
+        matchInfo: ['10000001','10000008','10000006','10000004','10000002','10000009','10000007','10000005','10000003'],
         scoreReport: []
     }
 ];
@@ -126,9 +126,22 @@ function updatePlayerSection(playerId, newSection) {
     console.log(samplePlayers);
 }
 
+function updatePlayerScoreReport(playerID, newSecoreReport) {
+    const playerIndex = samplePlayers.findIndex(samplePlayers => samplePlayers.id === playerID);
+    if (playerIndex !== -1) {
+        // Update the player's section
+        samplePlayers[playerIndex].scoreReport = newSecoreReport;
+    }
+
+    console.log(samplePlayers);
+}
+
+
+
 module.exports = {
     receivePlayerData,
     sendSamplePlayerData,
     sendPlayerData,
-    updatePlayerSection
+    updatePlayerSection,
+    updatePlayerScoreReport
 };
