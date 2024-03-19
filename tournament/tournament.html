@@ -32,6 +32,7 @@
 </head>
 <body>
 
+  <script src="playerControler.js" defer></script>
 
   <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
@@ -103,6 +104,8 @@
   <div id="schedule"></div>
 
   <script>
+    const players = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Harry', 'Ivy', 'Jack'];
+
     function generateSchedule() {
       const numPlayers = parseInt(document.getElementById('numPlayers').value);
       const numSections = parseInt(document.getElementById('numSections').value);
@@ -114,17 +117,12 @@
         return;
       }
 
-      const players = [];
-      for (let i = 1; i <= numPlayers; i++) {
-        players.push('Player ' + i);
-      }
-
       const sectionSize = Math.floor(numPlayers / numSections);
       let remainingPlayers = numPlayers % numSections;
 
-      // Add a dummy player if the number of players is odd
+      // Add a bye player if the number of players is odd
       if (numPlayers % 2 === 1) {
-        players.push('Dummy');
+        players.push('Bye');
       }
 
       for (let section = 1; section <= numSections; section++) {

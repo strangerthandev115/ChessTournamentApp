@@ -1,4 +1,4 @@
-let players = [];
+let players = ["John", "Sally", "Joe", "Tim", "Gatlin", "Jordan", "Tommy", "Emily"];
 let samplePlayers = [
     {
         id: 10000001,
