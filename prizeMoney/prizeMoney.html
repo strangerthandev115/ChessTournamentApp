@@ -123,7 +123,7 @@
     <label for="totalPrizeFund" class="form-label">Total Prize Fund ($)</label>
     <input type="number" class="form-control" id="totalPrizeFund" required>
   </div>
-  <button type="button" class="btn btn-primary" onclick="showPlayerNameFields()">Submit</button>
+  <button type="button" class="btn btn-primary" onclick="BuildTable()">Submit</button>
 </form>
 
 <!-- Display playerName input fields dynamically -->
@@ -147,6 +147,7 @@
       <tr>
         <th scope="col">Place</th>
         <th scope="col">Name</th>
+        <th scope="col">Rating</th>
         <th scope="col">Prize</th>
       </tr>
     </thead>
@@ -157,6 +158,149 @@
 
 <script>
   var totalPlayers;
+  let samplePlayers = [
+    {
+        id: 10000001,
+        fname: "John",
+        lname: "Doe",
+        rating: 1800,
+        scores : [1, 1, 1, 1, 1, 1, 1, 0, 1, 0]
+    },
+    {
+        id: 10000002,
+        fname: "Jane",
+        lname: "Smith",
+        rating: 2000,
+        scores :[1, 0, 1, 0, 1, 1, 1, 1, 1, 1]
+    },
+    {
+        id: 10000003,
+        fname: "Mike",
+        lname: "Johnson",
+        rating: 1700,
+        scores : [1, 0, 1, 0, 0, 0, , 0, 1, 0]
+    },
+    {
+        id: 10000004,
+        fname: "Sarah",
+        lname: "Williams",
+        rating: 1900,
+        scores : [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    },
+    {
+        id: 10000005,
+        fname: "David",
+        lname: "Brown",
+        rating: 1600,
+        scores :[1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    },
+    {
+        id: 10000006,
+        fname: "Emily",
+        lname: "Taylor",
+        rating: 2100,
+        scores: [1, 0, , 0, 0, 0, 0, 0, 1, 0]
+    },
+    {
+        id: 10000007,
+        fname: "Michael",
+        lname: "Anderson",
+        rating: 1750,
+        scores :[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    },
+    {
+        id: 10000008,
+        fname: "Jessica",
+        lname: "Martinez",
+        rating: 1850,
+        scores : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    {
+        id: 10000009,
+        fname: "Daniel",
+        lname: "Thomas",
+        rating: 1950,
+        scores : [1, 0, 1, 0, 1, 0, 1, 0, 0, 0]
+    },
+    {
+        id: 10000010,
+        fname: "Olivia",
+        lname: "Garcia",
+        rating: 2050,
+        scores : [1, 1, 1, 0, 1, 0, 1, 0, 1, 1]
+    }
+];
+
+function BuildTable() {
+  var highestScores = [];
+
+  for (var i = 0; i < samplePlayers.length; i++) {
+    var player = samplePlayers[i];
+    var highestScore =player.scores.reduce((total,score) => total + score, 0);
+    highestScores.push({ id: player.id, highestScore: highestScore });
+   
+    console.log(player.fname + " " + player.lname + " " + highestScore);
+  }
+
+
+  // Sort highestScores array in descending order based on highestScore
+    var playerTableContainer = document.getElementById("playerTableContainer");
+    var table = document.createElement("table");
+    table.classList.add("table");
+
+    // Create table header
+    var thead = document.createElement("thead");
+    var headerRow = document.createElement("tr");
+    var headers = ["ID", "First Name", "Last Name", "Rating", "Highest Score"];
+    for (var h = 0; h < headers.length; h++) {
+      var th = document.createElement("th");
+      th.textContent = headers[h];
+      headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Create table body
+    var tbody = document.createElement("tbody");
+    for (var i = 0; i < samplePlayers.length; i++) {
+      var player = samplePlayers[i];
+      var tr = document.createElement("tr");
+
+      // ID column
+      var idTd = document.createElement("td");
+      idTd.textContent = player.id;
+      tr.appendChild(idTd);
+
+      // First Name column
+      var fnameTd = document.createElement("td");
+      fnameTd.textContent = player.fname;
+      tr.appendChild(fnameTd);
+
+      // Last Name column
+      var lnameTd = document.createElement("td");
+      lnameTd.textContent = player.lname;
+      tr.appendChild(lnameTd);
+
+      // Rating column
+      var ratingTd = document.createElement("td");
+      ratingTd.textContent = player.rating;
+      tr.appendChild(ratingTd);
+
+      // Highest Score column
+      var highestScoreTd = document.createElement("td");
+      var highestScore = Math.max(...player.scores);
+      highestScoreTd.textContent = highestScore;
+      tr.appendChild(highestScoreTd);
+
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+
+    // Append table to playerTableContainer
+    playerTableContainer.appendChild(table);
+  
+}
+
 
   function showPlayerNameFields() {
     var totalPlayers = parseInt(document.getElementById("totalPlayers").value, 10);
@@ -255,6 +399,10 @@
     document.getElementById("totalPrizeFund").value = "";
   }
   
+
+  
+
+
   </script>
 
 
