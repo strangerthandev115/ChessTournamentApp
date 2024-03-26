@@ -92,7 +92,6 @@ let players = [];
 //     }
 // ];
 
-
 function receivePlayerData(playerData) {
     // Validate player data
     if(playerData.id === undefined || playerData.fname === undefined || playerData.lname === undefined) {
