@@ -162,7 +162,14 @@
       <input type="number" id="sectionCount" min="1" max="10" value="1">
       <button onclick="updateSectionCount()">Update</button>
     </div>
-    <div id="playersList"></div>
+    <div>
+      <input type="checkbox" id="showRapidRating" onchange="displayPlayers()" checked>
+      <label for="showRapidRating">Show Rapid Rating</label>
+      <input type="checkbox" id="showQuickRating" onchange="displayPlayers()" checked>
+      <label for="showQuickRating">Show Quick Rating</label>
+      </div>
+      <div id="playersList"></div>
+  
     <button onclick="savePlayerSections()">Save</button>
 
   </main>
@@ -185,15 +192,13 @@ function updateSectionCount() {
     displayPlayers();
 }
 
-
-// Function to display players based on the selected number of sections
-// Function to display players based on the selected number of sections
 function displayPlayers() {
     const playersList = document.getElementById('playersList');
     playersList.innerHTML = ''; // Clear previous content
 
-    // Sort players by rating
-    players.sort((a, b) => b.rating - a.rating); // Sort in descending order
+    // Get the state of checkboxes
+    const showRapidRating = document.getElementById('showRapidRating').checked;
+    const showQuickRating = document.getElementById('showQuickRating').checked;
 
     // Loop through each section
     for (let i = 0; i < sections; i++) {
@@ -209,39 +214,66 @@ function displayPlayers() {
         sectionPlayers.classList.add('list-group');
         sectionContainer.appendChild(sectionPlayers);
 
-        // Display players in the current section
-        for (const player of players) {
-            // Check if the player belongs to the current section or is unrated
-            if (player.section === (i + 1)) {
-                const rating = player.rating === 9999 ? 'Unrated' : player.rating; // Check for unrated players
-                const listItem = document.createElement('li');
-                listItem.classList.add('list-group-item');
-                listItem.textContent = `${player.fname} ${player.lname} - ${rating}`;
-
-                // Add dropdown menu for player to select section
-                const selectSection = document.createElement('select');
-                selectSection.classList.add('form-select', 'section-select');
-                selectSection.addEventListener('change', function(event) {
-                    assignPlayerToSection(player, event.target.value);
-                });
-
-                // Add options for each section
-                for (let j = 1; j <= sections; j++) {
-                    const option = document.createElement('option');
-                    option.value = j;
-                    option.textContent = `Section ${j}`;
-                    selectSection.appendChild(option);
-                }
-
-                // Set the selected option to the current section
-                selectSection.value = player.section;
-
-                listItem.appendChild(selectSection);
-                sectionPlayers.appendChild(listItem);
+        // Filter and sort players in the current section
+        const playersInSection = players.filter(player => player.section === (i + 1));
+        playersInSection.sort((a, b) => {
+            if (showRapidRating && showQuickRating) {
+                return (b.rapidRating - a.rapidRating) || (b.quickRating - a.quickRating);
+            } else if (showRapidRating) {
+                return b.rapidRating - a.rapidRating;
+            } else if (showQuickRating) {
+                return b.quickRating - a.quickRating;
             }
-        }
+            // If neither checkbox is checked, retain original order
+            return 0;
+        });
+
+      // Display sorted players in the current section
+      for (const player of playersInSection) {
+          const listItem = document.createElement('li');
+          listItem.classList.add('list-group-item');
+
+          let playerName = `${player.fname} ${player.lname}`;
+
+          // Check if either rating is 9999
+          const rapidRating = player.rapidRating === 9999 ? 'Unrated' : player.rapidRating;
+          const quickRating = player.quickRating === 9999 ? 'Unrated' : player.quickRating;
+
+          // Construct player's name with ratings based on checkbox selection
+          if (showRapidRating && showQuickRating) {
+              playerName += ` - Rapid: ${rapidRating}, Quick: ${quickRating}`;
+          } else if (showRapidRating) {
+              playerName += ` - Rapid: ${rapidRating}`;
+          } else if (showQuickRating) {
+              playerName += ` - Quick: ${quickRating}`;
+          }
+
+          listItem.textContent = playerName;
+
+          // Add dropdown menu for player to select section
+          const selectSection = document.createElement('select');
+          selectSection.classList.add('form-select', 'section-select');
+          selectSection.addEventListener('change', function(event) {
+              assignPlayerToSection(player, event.target.value);
+          });
+
+          // Add options for each section
+          for (let j = 1; j <= sections; j++) {
+              const option = document.createElement('option');
+              option.value = j;
+              option.textContent = `Section ${j}`;
+              selectSection.appendChild(option);
+          }
+
+          // Set the selected option to the current section
+          selectSection.value = player.section;
+
+          listItem.appendChild(selectSection);
+          sectionPlayers.appendChild(listItem);
+      }
     }
 }
+
 
 
 // Function to assign player to a specific section
