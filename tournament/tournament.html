@@ -32,7 +32,6 @@
 </head>
 <body>
 
-  <script src="playerControler.js" defer></script>
 
   <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Murfreesboro Chess Club</a>
@@ -67,13 +66,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/tournament">
+              <a class="nav-link active" aria-current="page" href="/tournament">
                 <span data-feather="play"></span>
                 Tournament
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="/scoreReport">
+              <a class="nav-link" href="/scoreReport">
                 <span data-feather="bar-chart-2"></span>
                 Score Report
               </a>
@@ -104,7 +103,39 @@
   <div id="schedule"></div>
 
   <script>
-    const players = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Harry', 'Ivy', 'Jack'];
+    let players = [];
+    let sections;
+    fetch('/getSamplePlayers')
+    .then(response => response.json())
+    .then(data => {
+        // Set the players array to the received sample players data
+        players = data;
+        // Determine the maximum section number from player data
+        let maxSection = 1; // Default to 1 if no players have a section assigned
+        players.forEach(player => {
+            if (player.section !== '' && parseInt(player.section) > maxSection) {
+                maxSection = parseInt(player.section);
+            }
+        });
+        // Set the initial value of 'sections' to the maximum section number
+        sections = maxSection;
+
+        // Now initialize the 'section' property for each player to their respective sections
+        players.forEach(player => {
+            if (player.section === '') { 
+                // If section is empty, set it to 1 by default
+                player.section = 1;
+            } else {
+                // Convert section to number if it's a string
+                player.section = parseInt(player.section);
+            }
+        });
+        console.log(players);
+    })
+    .catch(error => console.error('Error fetching sample player data:', error));
+
+
+
 
     function generateSchedule() {
       const numPlayers = parseInt(document.getElementById('numPlayers').value);
