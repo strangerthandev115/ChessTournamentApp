@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const playersController = require('./playersController');
+const dbfController = require('./dbfController');
 
 
 app.use(express.json());
@@ -88,6 +89,16 @@ app.post('/updatePlayerScoreReports', (req, res) => {
 
 
   res.status(200).send('Player score reports updated successfully');
+});
+
+app.post('/dbfGenerator', async (req, res) => {
+  try {
+      dbfController.writeTS();
+      res.status(200).send('DBF files created successfully');
+  } catch (error) {
+      console.error('Error creating DBF files:', error);
+      res.status(500).send('Internal server error');
+  }
 });
 
 // Start the server
