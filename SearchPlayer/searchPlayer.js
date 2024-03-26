@@ -81,11 +81,11 @@ function displayFirstTenElements() {
 function addPlayer(id, fname, lname, rapidRating, quickRating) {
     // Create a JSON object to hold the data
     if(rapidRating == "" || rapidRating == "U") {
-        rating = '9999';
+        rapidRating = '9999';
     }
 
     if(quickRating == "" || quickRating == "U") {
-        rating = '9999';
+        quickRating = '9999';
     }
 
     var results = {
@@ -93,10 +93,11 @@ function addPlayer(id, fname, lname, rapidRating, quickRating) {
         "fname": fname,
         "lname": lname,
         "rapidRating": rapidRating,
-        "quickRating": quickRating
+        "quickRating": quickRating,
+        "section": "",
+        "matchInfo": [],
+        "scoreReport": []
     };
-
-    console.log(results);
 
     fetch('http://localhost:3000/searchPlayer', {
     method: 'POST',
