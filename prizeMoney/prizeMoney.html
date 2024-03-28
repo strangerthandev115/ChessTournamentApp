@@ -123,7 +123,7 @@
     <label for="totalPrizeFund" class="form-label">Total Prize Fund ($)</label>
     <input type="number" class="form-control" id="totalPrizeFund" required>
   </div>
-  <button type="button" class="btn btn-primary" onclick="BuildTable()">Submit</button>
+  <button id="createTableButton"type="button" class="btn btn-primary" onclick="BuildTable()">Create Table</button>
 </form>
 
 <!-- Display playerName input fields dynamically -->
@@ -138,7 +138,7 @@
 
 
 <!-- Display table with players -->
-<div class="container mt-4" id="playerTableContainer" style="display: none;">
+<div class="container mt-4" id="playerTableContainer" >
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr style="font-size: 1.25rem; font-weight: bold;">
@@ -213,93 +213,111 @@
         fname: "Jessica",
         lname: "Martinez",
         rating: 1850,
-        scores : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        scores : [0, 0, .5, 0, 0, 0, 0, 0, 0, 0]
     },
     {
         id: 10000009,
         fname: "Daniel",
         lname: "Thomas",
         rating: 1950,
-        scores : [1, 0, 1, 0, 1, 0, 1, 0, 0, 0]
+        scores : [1, 0, 1, 0, .5, 0, 1, 0, .5, 0]
     },
     {
         id: 10000010,
         fname: "Olivia",
         lname: "Garcia",
         rating: 2050,
-        scores : [1, 1, 1, 0, 1, 0, 1, 0, 1, 1]
+        scores : [1, 1, 1, 0.5, 1, 0, 1, 0, 1, 1]
     }
 ];
 
 function BuildTable() {
-  var highestScores = [];
+  // Clear any existing table
+  var playerTableContainer = document.getElementById("playerTableContainer");
+  playerTableContainer.innerHTML = "";
 
+  // Sort samplePlayers array based on total score (descending order)
+  samplePlayers.sort(function(a, b) {
+    var totalScoreA = a.scores.reduce((total, score) => total + score, 0);
+    var totalScoreB = b.scores.reduce((total, score) => total + score, 0);
+    return totalScoreB - totalScoreA;
+  });
+
+  // Calculate prize fund
+  var numPlayers = samplePlayers.length;
+  var costPerPlayer = numPlayers <= 24 ? 6 : 8;
+  var prizeFund = numPlayers * costPerPlayer;
+
+  // Create the table HTML
+  var tableHTML = '<table class="table table-bordered">' +
+    '<thead class="thead-dark">' +
+    '<tr style="font-size: 1.25rem; font-weight: bold;">' +
+    '<th scope="col" colspan="4">Prize Fund: $' + prizeFund + '</th>' +
+    '</tr>' +
+    '<tr>' +
+    '<th scope="col">Place</th>' +
+    '<th scope="col">Name</th>' +
+    '<th scope="col">Rating</th>' +
+    '<th scope="col">Total Score</th>' +
+    '<th scope="col">Prize</th>' +
+    '</tr>' +
+    '</thead>' +
+    '<tbody id="playerTableBody"></tbody>' +
+    '</table>';
+
+  // Append the table HTML to the container
+  playerTableContainer.innerHTML = tableHTML;
+
+  // Populate the table body
+  var tbody = document.getElementById("playerTableBody");
   for (var i = 0; i < samplePlayers.length; i++) {
     var player = samplePlayers[i];
-    var highestScore =player.scores.reduce((total,score) => total + score, 0);
-    highestScores.push({ id: player.id, highestScore: highestScore });
-   
-    console.log(player.fname + " " + player.lname + " " + highestScore);
+    var tr = document.createElement("tr");
+
+    // Populate table row data
+    var placeTd = document.createElement("td");
+    placeTd.textContent = i + 1; // Assuming places start from 1
+    tr.appendChild(placeTd);
+
+    var nameTd = document.createElement("td");
+    nameTd.textContent = player.fname + " " + player.lname;
+    tr.appendChild(nameTd);
+
+    var ratingTd = document.createElement("td");
+    ratingTd.textContent = player.rating;
+    tr.appendChild(ratingTd);
+
+    var totalScoreTd = document.createElement("td");
+    var totalScore = player.scores.reduce((total, score) => total + score, 0);
+    totalScoreTd.textContent = totalScore;
+    tr.appendChild(totalScoreTd);
+
+    var prizeTd = document.createElement("td");
+    var prizePercentage;
+    if (i === 0) {
+      prizePercentage = 0.5; // 50% for first place
+    } else if (i === 1) {
+      prizePercentage = 0.3; // 30% for second place
+    } else if (i === 2) {
+      prizePercentage = 0.2; // 20% for third place
+    } else {
+      prizePercentage = 0; // No prize for other places
+    }
+    var prize = prizePercentage * prizeFund;
+    prizeTd.textContent = "$" + prize.toFixed(2); // Display prize with 2 decimal places
+    tr.appendChild(prizeTd);
+
+    tbody.appendChild(tr);
   }
-
-
-  // Sort highestScores array in descending order based on highestScore
-    var playerTableContainer = document.getElementById("playerTableContainer");
-    var table = document.createElement("table");
-    table.classList.add("table");
-
-    // Create table header
-    var thead = document.createElement("thead");
-    var headerRow = document.createElement("tr");
-    var headers = ["ID", "First Name", "Last Name", "Rating", "Highest Score"];
-    for (var h = 0; h < headers.length; h++) {
-      var th = document.createElement("th");
-      th.textContent = headers[h];
-      headerRow.appendChild(th);
-    }
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    // Create table body
-    var tbody = document.createElement("tbody");
-    for (var i = 0; i < samplePlayers.length; i++) {
-      var player = samplePlayers[i];
-      var tr = document.createElement("tr");
-
-      // ID column
-      var idTd = document.createElement("td");
-      idTd.textContent = player.id;
-      tr.appendChild(idTd);
-
-      // First Name column
-      var fnameTd = document.createElement("td");
-      fnameTd.textContent = player.fname;
-      tr.appendChild(fnameTd);
-
-      // Last Name column
-      var lnameTd = document.createElement("td");
-      lnameTd.textContent = player.lname;
-      tr.appendChild(lnameTd);
-
-      // Rating column
-      var ratingTd = document.createElement("td");
-      ratingTd.textContent = player.rating;
-      tr.appendChild(ratingTd);
-
-      // Highest Score column
-      var highestScoreTd = document.createElement("td");
-      var highestScore = Math.max(...player.scores);
-      highestScoreTd.textContent = highestScore;
-      tr.appendChild(highestScoreTd);
-
-      tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-
-    // Append table to playerTableContainer
-    playerTableContainer.appendChild(table);
-  
 }
+
+
+
+// Call the BuildTable function when the button is clicked
+document.getElementById("createTableButton").addEventListener("click", function() {
+  console.log("Button clicked");
+  BuildTable();
+});
 
 
   function showPlayerNameFields() {
@@ -401,7 +419,7 @@ function BuildTable() {
   
 
   
-
+ 
 
   </script>
 
@@ -411,4 +429,5 @@ function BuildTable() {
 
 </body>
 </html>
+
 
