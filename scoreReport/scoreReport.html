@@ -124,7 +124,7 @@
   let num_of_rounds = 0; // Number of rounds equals the number of players -1
   let matchInfo = []; // Match information for each round
 
-  fetch('/getSamplePlayers')
+  fetch('/getPlayers')
   .then(response => response.json())
   .then(data => {
     players = data;

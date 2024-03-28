@@ -286,7 +286,7 @@ function assignPlayerToSection(player, sectionNumber) {
 }
 
 // Fetch sample player data
-fetch('/getSamplePlayers')
+fetch('/getPlayers')
     .then(response => response.json())
     .then(data => {
         // Set the players array to the received sample players data
