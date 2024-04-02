@@ -20,12 +20,25 @@ function printPlayerDetails() {
                 var columns = rows[i].split('\t'); // Split row using tabs
                 if (columns[0].trim() === number.trim()) { // Assuming MEM_ID is the first column
                     // Construct the output with each column on a separate line
+
+                    var membershipDate = formatDate(columns[2]);
+
+                    if(expired(membershipDate)) {
+                        var membershipElement = document.getElementById('Membership');
+                        membershipElement.innerHTML = "<strong>**Membership expired**</strong>";
+                        membershipElement.style.color = 'red'; // Set text color to red
+                    }
+                    else {
+                        document.getElementById('Membership').innerHTML = "Membership is not expired!";
+                        document.getElementById('Membership').style.color = 'Green'; // Reset text color to black
+                    }
+
                     output = "<br>";
-                    var output = "Row: " + (i + 1) + "<br>";
+                   // var output = "Row: " + (i + 1) + "<br>";
                     columns.forEach(column => {
                         output += column + "<br>";
                     });
-                    console.log(columns[0] + " " + columns[1] + " " + columns[2] + " " + columns[3] + " " + columns[4] + " " + columns[5] + " " + columns[6] + " " + columns[7] + " " + columns[8] + " " + columns[9] + " " + columns[10] + " " + columns[11]);
+                    console.log(columns[0] + " " + columns[1] + " " + membershipDate + " " + columns[3] + " " + columns[4] + " " + columns[5] + " " + columns[6] + " " + columns[7] + " " + columns[8] + " " + columns[9] + " " + columns[10] + " " + columns[11]);
                     var id = columns[0];
                     var name = columns[1];
                     var partsOfStr = name.split(',');
@@ -33,8 +46,13 @@ function printPlayerDetails() {
                     fname = partsOfStr[1];
                     var rapidRating = columns[7];
                     var quickRating = columns[10];
-                    addPlayer(id, fname, lname, rapidRating, quickRating);
                     document.getElementById('playerDetailsOutput').innerHTML = output;
+
+                    // Show the submit button
+                    document.getElementById('submitButton').style.display = 'block';
+                    document.getElementById('submitButton').onclick = function() {
+                        addPlayer(id, fname, lname, rapidRating, quickRating);
+                    };
                     return; // Exit the loop if a match is found
                 }
             }
@@ -48,13 +66,16 @@ function printPlayerDetails() {
 }
 
 
+function formatDate(dateString) {
+    var parts = dateString.split(' ');
+    return parts.slice(0, 4).join(' ');
+}
+
+
 //function to check the expiration date of the player
 function expired(date) {
-    if(date < yyyymmdd()) {
-        return false;
-    } else {
-        return true;
-    }
+    var today = new Date();
+    return new Date(date) < today;
 }
 
 function displayFirstTenElements() {
@@ -154,3 +175,4 @@ function searchList(data, id) {
     }
     return false;
 }
+

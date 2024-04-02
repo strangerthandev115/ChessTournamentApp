@@ -111,12 +111,15 @@
           </form>
         </div>
         <div class="col-sm-4">
-          <button type="button" class="btn btn-sm btn-outline-secondary" style="display: inline-block" onclick="printPlayerDetails()">Search</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary" style="display: inline-block" onclick="displayFirstTenElements()">Display First Ten Elements</button>
+          <button id="SearchBtn" type="button" class="btn btn-sm btn-outline-secondary" style="display: inline-block" onclick="printPlayerDetails()">Search</button>
         </div>
       </div>
       <!-- Display the player details -->
       <div id="playerDetailsOutput"></div>
+      <div id="Membership"></div>
+
+      <button id="submitButton" type="button" class="btn btn-primary mx-auto" style="display: none;" onclick="addPlayer()">Submit</button>
+
       <div id="playerDetailsSuccess"></div>
     </main>
   </div>
@@ -127,3 +130,4 @@
 <script src="searchPlayer.js"></script>
 </body>
 </html>
+
