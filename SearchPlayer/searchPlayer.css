@@ -4,3 +4,13 @@
     align-items: center; /* Center vertically */
     height: 70%; 
 }
+
+#Membership{
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 8%; 
+}
+#SearchBtn{
+    margin-top: 10px;
+}
