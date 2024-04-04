@@ -5,7 +5,7 @@ let players = [
         lname: "Doe",
         quickRating: 1800,
         rapidRating: 1000,
-        section: '',
+        section: '1',
         matchInfo: [],
         scoreReport: []
     },
@@ -13,6 +13,66 @@ let players = [
         id: 10000002,
         fname: "Jane",
         lname: "Smith",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '1',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Joe",
+        lname: "Shmo",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '2',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Jim",
+        lname: "Shoe",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '2',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Jimmy",
+        lname: "Stone",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '1',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Josh",
+        lname: "Striker",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '1',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Jake",
+        lname: "Stilts",
+        quickRating: 9999,
+        rapidRating: 9999,
+        section: '1',
+        matchInfo: [],
+        scoreReport: []
+    },
+    {
+        id: 10000002,
+        fname: "Jermaine",
+        lname: "Snitch",
         quickRating: 9999,
         rapidRating: 9999,
         section: '1',
