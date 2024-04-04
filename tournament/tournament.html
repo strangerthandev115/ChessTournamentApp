@@ -95,17 +95,12 @@
 
 <div class="container">
   <h2>Chess Tournament Scheduler</h2>
-  <label for="numPlayers">Number of Players:</label>
-  <input type="number" id="numPlayers" min="2">
-  <label for="numSections">Number of Sections:</label>
-  <input type="number" id="numSections" min="1">
-  <button onclick="generateSchedule()">Generate Schedule</button>
   <div id="schedule"></div>
 
   <script>
     let players = [];
     let sections;
-    fetch('/getSamplePlayers')
+    fetch('/getPlayers')
     .then(response => response.json())
     .then(data => {
         // Set the players array to the received sample players data
@@ -131,71 +126,79 @@
             }
         });
         console.log(players);
+        console.log(sections);
+
+        // Once the player data is fetched, you can proceed to generate the schedule
+        generateSchedule();
     })
     .catch(error => console.error('Error fetching sample player data:', error));
 
-
-
-
     function generateSchedule() {
-      const numPlayers = parseInt(document.getElementById('numPlayers').value);
-      const numSections = parseInt(document.getElementById('numSections').value);
-      const scheduleContainer = document.getElementById('schedule');
-      scheduleContainer.innerHTML = '';
+  const numPlayers = players.length; // Using all players fetched from the API
+  const numSections = sections; // Using the sections calculated from the fetched data
+  const scheduleContainer = document.getElementById('schedule');
+  scheduleContainer.innerHTML = '';
 
-      if (numPlayers < 2 || numSections < 1) {
-        scheduleContainer.textContent = 'Please enter valid inputs.';
-        return;
-      }
+  if (numPlayers < 2 || numSections < 1) {
+    scheduleContainer.textContent = 'Please enter valid inputs.';
+    return;
+  }
 
-      const sectionSize = Math.floor(numPlayers / numSections);
-      let remainingPlayers = numPlayers % numSections;
+  const sectionSize = Math.floor(numPlayers / numSections);
+  let remainingPlayers = numPlayers % numSections;
 
-      // Add a bye player if the number of players is odd
-      if (numPlayers % 2 === 1) {
-        players.push('Bye');
-      }
+  // Add a bye player if the number of players is odd
+  if (numPlayers % 2 === 1) {
+    players.push('Bye');
+  }
 
-      for (let section = 1; section <= numSections; section++) {
-        scheduleContainer.innerHTML += `<h3>Section ${section}:</h3>`;
-        const sectionPlayers = players.slice((section - 1) * sectionSize, section * sectionSize);
-        if (remainingPlayers > 0) {
-          sectionPlayers.push('Bye');
-          remainingPlayers--;
-        }
-
-        const matchups = generateMatchups(sectionPlayers);
-
-        for (let round = 0; round < sectionPlayers.length - 1; round++) {
-          scheduleContainer.innerHTML += `<h4>Round ${round + 1}:</h4>`;
-          for (let board = 0; board < matchups[round].length; board++) {
-            const [player1, player2] = matchups[round][board];
-            const color1 = round % 2 === 0 ? 'W' : 'B';
-            const color2 = round % 2 === 0 ? 'B' : 'W';
-            scheduleContainer.innerHTML += `Board ${board + 1}: ${player1} (${color1}) vs ${player2} (${color2})<br>`;
-          }
-        }
-      }
+  for (let section = 1; section <= numSections; section++) {
+    scheduleContainer.innerHTML += `<h3>Section ${section}:</h3>`;
+    const sectionPlayers = players.filter(player => player.section === section); // Filter players by section
+    if (remainingPlayers > 0) {
+      sectionPlayers.push('Bye');
+      remainingPlayers--;
     }
 
-    function generateMatchups(players) {
-      const matchups = [];
-      const numPlayers = players.length;
+    const matchups = generateMatchups(sectionPlayers);
 
-      for (let i = 0; i < numPlayers - 1; i++) {
-        const roundMatchups = [];
-        for (let j = 0; j < numPlayers / 2; j++) {
-          const player1 = players[j];
-          const player2 = players[numPlayers - 1 - j];
-          roundMatchups.push([player1, player2]);
-        }
-        matchups.push(roundMatchups);
-        players.splice(1, 0, players.pop());
+    for (let round = 0; round < sectionPlayers.length - 1; round++) {
+      scheduleContainer.innerHTML += `<h4>Round ${round + 1}:</h4>`;
+      for (let board = 0; board < matchups[round].length; board++) {
+        const [player1, player2] = matchups[round][board];
+        const color1 = round % 2 === 0 ? 'W' : 'B';
+        const color2 = round % 2 === 0 ? 'B' : 'W';
+        // Access first and last names using correct keys
+        scheduleContainer.innerHTML += `Board ${board + 1}: ${player1.fname} ${player1.lname} (${color1}) vs ${player2.fname} ${player2.lname} (${color2})<br>`;
       }
-
-      return matchups;
     }
-  </script>
+  }
+}
+
+
+
+function generateMatchups(players) {
+  const matchups = [];
+  const numPlayers = players.length;
+
+  for (let round = 0; round < numPlayers - 1; round++) {
+    const roundMatchups = [];
+    for (let i = 0; i < numPlayers / 2; i++) {
+      const player1 = players[i];
+      const player2 = players[numPlayers - 1 - i];
+      roundMatchups.push([player1, player2]);
+    }
+    matchups.push(roundMatchups);
+    // Rotate players for the next round
+    players.splice(1, 0, players.pop());
+  }
+
+  return matchups;
+}
+
+</script>
+
+
   </div>
 </body>
 </html>
