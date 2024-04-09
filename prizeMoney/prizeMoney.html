@@ -113,7 +113,7 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2" id="prizeMoneyTitle">Prize Money</h1>
       </div>
-<!-- Form for adding totalPrizeFund and totalPlayers information -->
+<!-- Form for adding totalPrizeFund and totalPlayers information 
 <form id="playerForm">
   <div class="mb-3" id="totalPlayersDiv">
     <label for="totalPlayers" class="form-label">Total Players</label>
@@ -123,8 +123,10 @@
     <label for="totalPrizeFund" class="form-label">Total Prize Fund ($)</label>
     <input type="number" class="form-control" id="totalPrizeFund" required>
   </div>
+-->
   <button id="createTableButton"type="button" class="btn btn-primary" onclick="BuildTable()">Create Table</button>
 </form>
+
 
 <!-- Display playerName input fields dynamically -->
 <div id="playerNameFields" style="display: none;">
@@ -231,20 +233,34 @@
     }
 ];
 
+let players = [];
+fetch('/getPlayers')
+  .then(response => response.json())
+  .then(data => {
+    players = data;
+    players.forEach(player => {
+        console.log(player.fname);
+        console.log("Score report:", player.scoreReport); // Debugging statement
+        const totalScore = player.scoreReport.reduce((total, score) => total + score, 0);
+        console.log("Total score:", totalScore); // Debugging statement
+    });
+});
+  
+
 function BuildTable() {
   // Clear any existing table
   var playerTableContainer = document.getElementById("playerTableContainer");
   playerTableContainer.innerHTML = "";
 
   // Sort samplePlayers array based on total score (descending order)
-  samplePlayers.sort(function(a, b) {
-    var totalScoreA = a.scores.reduce((total, score) => total + score, 0);
-    var totalScoreB = b.scores.reduce((total, score) => total + score, 0);
+  players.sort(function(a, b) {
+    var totalScoreA = a.scoreReport.reduce((total, score) => total + score, 0);
+    var totalScoreB = b.scoreReport.reduce((total, score) => total + score, 0);
     return totalScoreB - totalScoreA;
   });
 
   // Calculate prize fund
-  var numPlayers = samplePlayers.length;
+  var numPlayers = players.length;
   var costPerPlayer = numPlayers <= 24 ? 6 : 8;
   var prizeFund = numPlayers * costPerPlayer;
 
@@ -270,8 +286,8 @@ function BuildTable() {
 
   // Populate the table body
   var tbody = document.getElementById("playerTableBody");
-  for (var i = 0; i < samplePlayers.length; i++) {
-    var player = samplePlayers[i];
+  for (var i = 0; i < players.length; i++) {
+    var player = players[i];
     var tr = document.createElement("tr");
 
     // Populate table row data
@@ -284,11 +300,11 @@ function BuildTable() {
     tr.appendChild(nameTd);
 
     var ratingTd = document.createElement("td");
-    ratingTd.textContent = player.rating;
+    ratingTd.textContent = player.quickRating;
     tr.appendChild(ratingTd);
 
     var totalScoreTd = document.createElement("td");
-    var totalScore = player.scores.reduce((total, score) => total + score, 0);
+    var totalScore = player.scoreReport.reduce((total, score) => total + score, 0);
     totalScoreTd.textContent = totalScore;
     tr.appendChild(totalScoreTd);
 
@@ -318,6 +334,50 @@ document.getElementById("createTableButton").addEventListener("click", function(
   console.log("Button clicked");
   BuildTable();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   function showPlayerNameFields() {
