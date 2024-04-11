@@ -5,7 +5,7 @@ let players = [
         lname: "Doe",
         quickRating: 1800,
         rapidRating: 1000,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     },
@@ -15,67 +15,67 @@ let players = [
         lname: "Smith",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000003,
         fname: "Joe",
         lname: "Shmo",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '2',
+        section: 2,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000004,
         fname: "Jim",
         lname: "Shoe",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '2',
+        section: 2,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000005,
         fname: "Jimmy",
         lname: "Stone",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000006,
         fname: "Josh",
         lname: "Striker",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000007,
         fname: "Jake",
         lname: "Stilts",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     },
     {
-        id: 10000002,
+        id: 10000008,
         fname: "Jermaine",
         lname: "Snitch",
         quickRating: 9999,
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
         scoreReport: []
     }
@@ -111,9 +111,6 @@ function updatePlayerSection(playerId, newSection) {
         // Update the player's section
         players[playerIndex].section = newSection;
     }
-
-    console.log("updatePlayerSection");
-    console.log(players);
 }
 
 function updatePlayerScoreReport(playerID, newSecoreReport) {
