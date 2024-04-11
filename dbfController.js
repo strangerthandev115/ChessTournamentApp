@@ -2,30 +2,38 @@ const { DBFFile } = require('dbffile');
 var fs = require('fs');
 
 async function deletePreviousDBFs() {
-    // Delete the previous dbf file generated
     try {
-        // Check if the file exists
-        fs.access("./dbfGenerator/output.dbf", fs.constants.F_OK, (err) => {
-            if (err) {
-                console.log('File does not exist');
-            } else {
-                // Delete the file
-                fs.unlink("./dbfGenerator/output.dbf", (err) => {
-                    if (err) {
-                        console.error('Error deleting file:', err);
-                        return; // Exit the function if there's an error deleting the file
-                    }
-                    console.log('File deleted successfully');
-                });
-            }
-        });
+        const filesToDelete = ["tsexport.dbf", "tdexport.dbf", "thexport.dbf"];
+
+        // Loop through each file name
+        for (const file of filesToDelete) {
+            // Check if the file exists
+            fs.access(`./dbfGenerator/${file}`, fs.constants.F_OK, (err) => {
+                if (err) {
+                    console.log(`${file} does not exist`);
+                } else {
+                    // Delete the file
+                    fs.unlink(`./dbfGenerator/${file}`, (err) => {
+                        if (err) {
+                            console.error(`Error deleting ${file}:`, err);
+                            return; // Exit the function if there's an error deleting the file
+                        }
+                        console.log(`${file} deleted successfully`);
+                    });
+                }
+            });
+        }
     } catch (err) {
         console.error('Error:', err);
     }
 }
 
+// Example usage
+deletePreviousDBFs();
+
+
 // This Function creates the necessary tdexport.df file
-function writeTD()
+async function writeTD()
 {
     let fieldDescriptors = [
         { name: 'D_EVENT_ID', type: 'C', size: 9 },
@@ -86,6 +94,19 @@ function writeTD()
             D_SEC_NUM: 221217001
         }
     ];
+
+    // Delete the previous DBF
+    await deletePreviousDBFs();
+
+    // Create the new dbf file
+    try {
+        let dbf = await DBFFile.create('./dbfGenerator/tsexport.dbf', fieldDescriptors);
+        console.log('DBF file created.');
+        dbf.appendRecords(records);
+        console.log(`${records.length} records added.`);
+    } catch (err) {
+        console.error('Error creating new DBF file:', err);
+    }
 }
 
 // This Function creates the necessary tsexport.df file
@@ -146,7 +167,7 @@ async function writeTS()
 
     // Create the new dbf file
     try {
-        let dbf = await DBFFile.create('./dbfGenerator/output.dbf', fieldDescriptors);
+        let dbf = await DBFFile.create('./dbfGenerator/tsexport.dbf', fieldDescriptors);
         console.log('DBF file created.');
         dbf.appendRecords(records);
         console.log(`${records.length} records added.`);
@@ -156,7 +177,7 @@ async function writeTS()
 }
 
 // This Function creates the necessary thexport.df file
-function writeTH()
+async function writeTH()
 {
     let fieldDescriptors = [
         { name: 'H_EVENT_ID', type: 'C', size: 9 },
@@ -175,6 +196,19 @@ function writeTH()
         { name: 'H_SCHOLAST', type: 'C', size: 1 },
         { name: 'H_SECREC01', type: 'N', size: 7.0 }
     ];
+
+    // Delete the previous DBF
+    await deletePreviousDBFs();
+
+    // Create the new dbf file
+    try {
+        let dbf = await DBFFile.create('./dbfGenerator/thexport.dbf', fieldDescriptors);
+        console.log('DBF file created.');
+        dbf.appendRecords(records);
+        console.log(`${records.length} records added.`);
+    } catch (err) {
+        console.error('Error creating new DBF file:', err);
+    }
 }
 
 // This Function calls the functions to create the dbf files
