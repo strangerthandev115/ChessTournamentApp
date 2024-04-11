@@ -1,84 +1,34 @@
 let players = [
-    {
+   /* {
         id: 10000001,
         fname: "John",
         lname: "Doe",
         quickRating: 1800,
         rapidRating: 1000,
-        section: '1',
+        section: 1,
         matchInfo: [],
-        scoreReport: [0,1,0,0]
+        scoreReport: [0,0]
     },
     {
         id: 10000002,
         fname: "Jane",
         lname: "Smith",
-        quickRating: 9999,
+        quickRating: '9999',
         rapidRating: 9999,
-        section: '1',
+        section: 1,
         matchInfo: [],
-        scoreReport: [0,0,0,0]
+        scoreReport: [0,0]
     },
     {
-        id: 10000002,
-        fname: "Joe",
-        lname: "Shmo",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: '2',
-        matchInfo: [],
-        scoreReport: [1,1,1,1]
-    },
-    {
-        id: 10000002,
-        fname: "Jim",
-        lname: "Shoe",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: '2',
-        matchInfo: [],
-        scoreReport: [0,1,1,1]
-    },
-    {
-        id: 10000002,
-        fname: "Jimmy",
-        lname: "Stone",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: '1',
-        matchInfo: [],
-        scoreReport: [0,0,0,0]
-    },
-    {
-        id: 10000002,
+        id: 10000003,
         fname: "Josh",
         lname: "Striker",
         quickRating: 9999,
         rapidRating: 9999,
         section: '1',
         matchInfo: [],
-        scoreReport: [0,1,0,1]
-    },
-    {
-        id: 10000002,
-        fname: "Jake",
-        lname: "Stilts",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: '1',
-        matchInfo: [],
-        scoreReport: [1,1,1,1]
-    },
-    {
-        id: 10000002,
-        fname: "Jermaine",
-        lname: "Snitch",
-        quickRating: 1111,
-        rapidRating: 9999,
-        section: '1',
-        matchInfo: [],
-        scoreReport: [1,0,0,0]
-    }
+        scoreReport: [0,1,]
+    }*/
 ];
 
 function receivePlayerData(playerData) {
@@ -111,9 +61,6 @@ function updatePlayerSection(playerId, newSection) {
         // Update the player's section
         players[playerIndex].section = newSection;
     }
-
-    console.log("updatePlayerSection");
-    console.log(players);
 }
 
 function updatePlayerScoreReport(playerID, newSecoreReport) {
@@ -127,10 +74,25 @@ function updatePlayerScoreReport(playerID, newSecoreReport) {
 }
 
 
+function deletePlayerData(playerData) {
+    if(playerData.id === undefined || playerData.fname === undefined || playerData.lname === undefined) {
+        throw new Error('Invalid player data');
+    }
+    const playerIndex = players.findIndex(player => player.id === playerData.id);
+
+    if (playerIndex !== -1) {
+        // Remove the player from the players array
+        players.splice(playerIndex, 1);
+        console.log("Player successfully deleted");
+        console.log(players); // Log the updated players array
+    } else {
+        console.log("Player not found");
+    }
+}
 
 module.exports = {
     receivePlayerData,
-    //sendSamplePlayerData,
+    deletePlayerData,
     sendPlayerData,
     updatePlayerSection,
     updatePlayerScoreReport

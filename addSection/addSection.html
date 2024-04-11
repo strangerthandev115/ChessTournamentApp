@@ -175,24 +175,12 @@
   </main>
 </div>
 </div>
-
 <script>
-  let sections = 1; // Set the start nu of sections to 1
+  let sections = 1; // Set the start num of sections to 1
   let players = []; // Declare players array
+  let dropPlayers =[];
 
-// Function to update the number of sections
-function updateSectionCount() {
-    const sectionCountInput = document.getElementById('sectionCount');
-    const newSectionCount = parseInt(sectionCountInput.value);
-
-    // Update the 'sections' variable
-    sections = newSectionCount;
-
-    // Redisplay the players based on the updated section count
-    displayPlayers();
-}
-
-function displayPlayers() {
+  function displayPlayers() {
     const playersList = document.getElementById('playersList');
     playersList.innerHTML = ''; // Clear previous content
 
@@ -200,8 +188,60 @@ function displayPlayers() {
     const showRapidRating = document.getElementById('showRapidRating').checked;
     const showQuickRating = document.getElementById('showQuickRating').checked;
 
+    // Determine the maximum section number from player data
+    let maxSection = 0;
+    players.forEach(player => {
+        if (player.section > maxSection) {
+            maxSection = player.section;
+        }
+    });
+
+    // Display Drop Section
+    const dropSectionContainer = document.createElement('div');
+    dropSectionContainer.classList.add('section-container');
+    playersList.appendChild(dropSectionContainer);
+
+    const dropSectionHeader = document.createElement('h2');
+    dropSectionHeader.textContent = 'Drop Section';
+    dropSectionContainer.appendChild(dropSectionHeader);
+
+    const dropSectionPlayers = document.createElement('ul');
+    dropSectionPlayers.classList.add('list-group');
+    dropSectionContainer.appendChild(dropSectionPlayers);
+
+    // Loop through players marked for dropping
+    for (const player of dropPlayers) {
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+
+        // Add player's name
+        const playerName = `${player.fname} ${player.lname}`;
+        listItem.textContent = playerName;
+
+        // Add dropdown menu for player to select section
+        const selectSection = document.createElement('select');
+        selectSection.classList.add('form-select', 'section-select');
+        selectSection.addEventListener('change', function(event) {
+            assignPlayerToSection(player, event.target.value);
+        });
+
+        // Add options for each section including 'Drop'
+        for (let j = 0; j <= maxSection; j++) {
+            const option = document.createElement('option');
+            option.value = j;
+            option.textContent = j === 0 ? 'Drop' : `Section ${j}`;
+            selectSection.appendChild(option);
+        }
+
+        // Set the selected option to 'Drop'
+        selectSection.value = 0;
+
+        listItem.appendChild(selectSection);
+        dropSectionPlayers.appendChild(listItem);
+    }
+
     // Loop through each section
-    for (let i = 0; i < sections; i++) {
+    for (let i = 0; i < maxSection; i++) {
         const sectionContainer = document.createElement('div');
         sectionContainer.classList.add('section-container');
         playersList.appendChild(sectionContainer);
@@ -228,62 +268,77 @@ function displayPlayers() {
             return 0;
         });
 
-      // Display sorted players in the current section
-      for (const player of playersInSection) {
-          const listItem = document.createElement('li');
-          listItem.classList.add('list-group-item');
+        // Display sorted players in the current section
+        for (const player of playersInSection) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
 
-          let playerName = `${player.fname} ${player.lname}`;
+            // Add player's name and ratings
+            let playerName = `${player.fname} ${player.lname}`;
+            if (showRapidRating && showQuickRating) {
+                playerName += ` - Rapid: ${player.rapidRating}, Quick: ${player.quickRating}`;
+            } else if (showRapidRating) {
+                playerName += ` - Rapid: ${player.rapidRating}`;
+            } else if (showQuickRating) {
+                playerName += ` - Quick: ${player.quickRating}`;
+            }
+            listItem.textContent = playerName;
 
-          // Check if either rating is 9999
-          const rapidRating = player.rapidRating === 9999 ? 'Unrated' : player.rapidRating;
-          const quickRating = player.quickRating === 9999 ? 'Unrated' : player.quickRating;
+            // Add dropdown menu for player to select section
+            const selectSection = document.createElement('select');
+            selectSection.classList.add('form-select', 'section-select');
+            selectSection.addEventListener('change', function(event) {
+                assignPlayerToSection(player, event.target.value);
+            });
 
-          // Construct player's name with ratings based on checkbox selection
-          if (showRapidRating && showQuickRating) {
-              playerName += ` - Rapid: ${rapidRating}, Quick: ${quickRating}`;
-          } else if (showRapidRating) {
-              playerName += ` - Rapid: ${rapidRating}`;
-          } else if (showQuickRating) {
-              playerName += ` - Quick: ${quickRating}`;
-          }
+            // Add options for each section
+            for (let j = 0; j <= maxSection; j++) {
+                const option = document.createElement('option');
+                option.value = j;
+                option.textContent = j === 0 ? 'Drop' : `Section ${j}`;
+                selectSection.appendChild(option);
+            }
 
-          listItem.textContent = playerName;
+            // Set the selected option to the current section
+            selectSection.value = player.section;
 
-          // Add dropdown menu for player to select section
-          const selectSection = document.createElement('select');
-          selectSection.classList.add('form-select', 'section-select');
-          selectSection.addEventListener('change', function(event) {
-              assignPlayerToSection(player, event.target.value);
-          });
-
-          // Add options for each section
-          for (let j = 1; j <= sections; j++) {
-              const option = document.createElement('option');
-              option.value = j;
-              option.textContent = `Section ${j}`;
-              selectSection.appendChild(option);
-          }
-
-          // Set the selected option to the current section
-          selectSection.value = player.section;
-
-          listItem.appendChild(selectSection);
-          sectionPlayers.appendChild(listItem);
-      }
+            listItem.appendChild(selectSection);
+            sectionPlayers.appendChild(listItem);
+        }
     }
 }
 
 
-
-// Function to assign player to a specific section
 function assignPlayerToSection(player, sectionNumber) {
-    // Update the player's section property
-    player.section = parseInt(sectionNumber);
+    sectionNumber = parseInt(sectionNumber); // Parse section number to integer
+
+    if (sectionNumber === 0) { // Check if Drop Section
+        player.section = 0;
+        // Player is assigned to Drop Section
+        // Remove the player from all sections
+        players = players.filter(p => p.id !== player.id);
+        dropPlayers.push(player);
+    } else {
+        // Player is assigned to a regular section
+        // Update the player's section
+        player.section = sectionNumber;
+        // Remove the player from the dropPlayers array if they were previously marked for dropping
+        dropPlayers = dropPlayers.filter(p => p.id !== player.id);
+        // Check if the player is already in the players array
+        const existingPlayerIndex = players.findIndex(p => p.id === player.id);
+        if (existingPlayerIndex === -1) {
+            // Player is not in the players array, add them
+            players.push(player);
+        } else {
+            // Player is already in the players array, update their section
+            players[existingPlayerIndex].section = sectionNumber;
+        }
+    }
 
     // Redisplay the players based on the updated sections
     displayPlayers();
 }
+
 
 // Fetch sample player data
 fetch('/getPlayers')
@@ -325,22 +380,46 @@ fetch('/getPlayers')
 
 
 
-
-    function savePlayerSections() {
-    // Create an array to hold updated player data
+  function savePlayerSections() {
     const updatedPlayers = [];
+    const removePlayers = [];
 
+    // Loop through the players to identify players to be deleted
+    dropPlayers.forEach(player => {
+        removePlayers.push(player); // Add player to the list of players to be removed
+    });
 
-    // Loop through the players
+    // Loop through the remaining players to prepare the list of updated players
     players.forEach(player => {
-        // Push each player's updated data to the array
         updatedPlayers.push({
             id: player.id,
             section: player.section
         });
     });
 
-    // Send a POST request with the updated player data
+    // Send a POST request to the server to delete players
+    fetch('/deletePlayers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(removePlayers)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Players deleted successfully');
+            // Once players are deleted, proceed to update player sections
+            updatePlayerSections(updatedPlayers);
+        } else {
+            console.error('Failed to delete players');
+        }
+    })
+    .catch(error => console.error('Error deleting players:', error));
+}
+
+// Function to update player sections after players are deleted
+function updatePlayerSections(updatedPlayers) {
+    // Send a POST request with the updated player data to update player sections
     fetch('/updatePlayerSections', {
         method: 'POST',
         headers: {
@@ -351,12 +430,15 @@ fetch('/getPlayers')
     .then(response => {
         if (response.ok) {
             alert('Player sections updated successfully');
+            // Once player sections are updated, refresh the player list display
+            displayPlayers();
         } else {
             console.error('Failed to update player sections');
         }
     })
     .catch(error => console.error('Error updating player sections:', error));
 }
+
 
 
 </script>

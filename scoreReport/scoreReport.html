@@ -99,13 +99,6 @@
       <!-- Table to display opponents -->
       <div id="scoreTableContainer">
           <table class="table">
-              <thead>
-                  <tr>
-                      <th>Player</th>
-                      <!-- Column headers will be generated dynamically -->
-                      <!-- Empty th for player names -->
-                  </tr>
-              </thead>
               <tbody id="opponentsTableBody">
                   <!-- Table body will be generated dynamically -->
               </tbody>
@@ -120,133 +113,115 @@
 </div>
 
 <script>
-  let players = []; // Array of player names
-  let num_of_rounds = 0; // Number of rounds equals the number of players -1
-  let matchInfo = []; // Match information for each round
+let players = []; // Array of player objects
+let sections = {};
 
-  fetch('/getPlayers')
+fetch('/getPlayers')
   .then(response => response.json())
   .then(data => {
     players = data;
-    num_of_rounds = players.length - 1;
-
-    for (let i = 0; i < players.length; i++) {
-      matchInfo.push(players[i].matchInfo);
-    }
-
-    // Now you have both players data and matchInfo
-    // Convert matchInfo IDs to opponent names
-    matchInfo = matchInfo.map(roundMatches => roundMatches.map(opponentId => {
-      if (opponentId === 'Bye') {
-        return 'Bye'; // Handle 'Bye' case separately
-      } else {
-        const opponent = players.find(player => player.id === opponentId);
-        return opponent ? `${opponent.fname} ${opponent.lname}` : ''; // Concatenate first name and last name
+    
+    // Group players by section
+    players.forEach(player => {
+      if (!sections[player.section]) {
+        sections[player.section] = [];
       }
-    }));
-
-    generateOpponentsTable(players);
+      sections[player.section].push(player);
+    });
+    
+    // Generate tables for each section
+    Object.keys(sections).forEach(section => {
+      generateOpponentsTable(sections[section], section);
+    });
   })
   .catch(error => console.error('Error fetching sample player data:', error));
 
+// Function to generate opponents table for a section
+function generateOpponentsTable(sectionPlayers, sectionName) {
+  const container = document.getElementById('scoreTableContainer');
+  const sectionHeader = document.createElement('h2');
+  sectionHeader.textContent = sectionName;
+  container.appendChild(sectionHeader);
 
-    
-function generateOpponentsTable(players) {
-  const opponentsTableBody = document.getElementById('opponentsTableBody');
-  const tableHeadRow = document.querySelector('#scoreTableContainer table thead tr');
+  const table = document.createElement('table');
+  table.classList.add('table');
+  const tableHead = document.createElement('thead');
+  const tableBody = document.createElement('tbody');
 
-  // Clear previous content
-  opponentsTableBody.innerHTML = '';
-  tableHeadRow.innerHTML = '<th>Player</th>'; // Reset the table headers
+  const tableHeadRow = document.createElement('tr');
+  tableHeadRow.innerHTML = '<th>Players</th>'; // Reset the table headers
+
+  let num_of_rounds = sectionPlayers.length - 1;
 
   // Generate the column headers
   for (let i = 0; i < num_of_rounds; i++) {
-    tableHeadRow.innerHTML += '<th>Round ' + (i + 1) + '</th>';
+    tableHeadRow.innerHTML += `<th>Round ${i + 1}</th>`;
   }
 
+  tableHead.appendChild(tableHeadRow);
+
   // Generate table rows
-  for (let i = 0; i < players.length; i++) {
-  const player = players[i];
-  const row = document.createElement('tr');
-  const playerNameCell = document.createElement('td');
-  playerNameCell.textContent = player.fname + ' ' + player.lname; // Concatenate first name and last name
-  row.appendChild(playerNameCell);
+  sectionPlayers.forEach(player => {
+    const row = document.createElement('tr');
+    const playerNameCell = document.createElement('td');
+    playerNameCell.textContent = `${player.fname} ${player.lname}`;
+    row.appendChild(playerNameCell);
 
-  for (let j = 0; j < num_of_rounds; j++) {
-    const roundCell = document.createElement('td');
-    const opponentInput = document.createElement('input');
-    opponentInput.type = 'number';
-    opponentInput.step = '0.5'; // Step can be 0.5 for tie, 1 for win/loss
-    opponentInput.min = '0';
-    opponentInput.max = '1';
-    opponentInput.classList.add('form-control');
-    
-    let opponentId = matchInfo[i][j];
-    if (opponentId !== 'Bye') {
-      opponentPlayer = players.find(player => player.id === opponentId);
-      opponentInput.placeholder = opponentPlayer ? 'vs ' + opponentPlayer.fname + ' ' + opponentPlayer.lname : '';
-    } else {
-      opponentInput.value = 'Bye';
-      opponentInput.disabled = true; // Disable input if it's 'Bye'
-    }
+    // Generate input fields for match results
+    for (let j = 0; j < num_of_rounds; j++) {
+      const roundCell = document.createElement('td');
+      const opponentInput = document.createElement('input');
+      opponentInput.type = 'number';
+      opponentInput.step = '0.5';
+      opponentInput.min = '0';
+      opponentInput.max = '1';
+      opponentInput.classList.add('form-control');
 
-    if (player.scoreReport.length > j) {
+      if (player.scoreReport.length > j) {
         opponentInput.value = player.scoreReport[j];
       }
 
-    // Add event listener to fill in corresponding match result
-    opponentInput.addEventListener('input', function(event) {
-      const result = parseFloat(event.target.value);
-      const correspondingOpponentInput = getCorrespondingOpponentInput(i, j);
-      if (correspondingOpponentInput) {
-        correspondingOpponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
-      }
-    });
+      opponentInput.addEventListener('input', function(event) {
+        const result = parseFloat(event.target.value);
+        // Update the corresponding opponent's score
+        updateOpponentScore(sectionPlayers.indexOf(player), j, result);
+      });
 
-    roundCell.appendChild(opponentInput);
-    row.appendChild(roundCell);
-  }
+      roundCell.appendChild(opponentInput);
+      row.appendChild(roundCell);
+    }
 
+    tableBody.appendChild(row);
+  });
 
-
-
-  opponentsTableBody.appendChild(row);
+  table.appendChild(tableHead);
+  table.appendChild(tableBody);
+  container.appendChild(table);
 }
 
-}
-
-
-  // Function to get corresponding opponent input
-  function getCorrespondingOpponentInput(playerIndex, roundIndex) {
-      const opponentIndex = matchInfo[playerIndex][roundIndex];
-      for (let i = 0; i < players.length; i++) {
-          if (players[i] === opponentIndex) {
-              const opponentRow = document.getElementById('opponentsTableBody').children[i];
-              return opponentRow.children[roundIndex + 1].children[0]; // +1 to skip player name cell
-          }
-      }
-      return null;
+// Function to update opponent's score based on player's score
+function updateOpponentScore(playerIndex, roundIndex, result) {
+  const opponentIndex = (playerIndex + 1) % players.length;
+  const opponentRow = document.getElementById('opponentsTableBody').children[opponentIndex];
+  const opponentInput = opponentRow.children[roundIndex + 1].children[0]; // +1 to skip player name cell
+  if (opponentInput) {
+    opponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
   }
-
+}
 
 // Function to check if the table is full
 function isTableFull() {
-    const inputs = document.querySelectorAll('#opponentsTableBody input');
-    for (let i = 0; i < inputs.length; i++) {
-        // Check if the input is disabled (which means bye) or filled with 'Bye'
-        if (inputs[i].disabled || inputs[i].value === 'Bye' ) {
-            continue; // Skip 'Bye' inputs
-        }
-        // If it's not filled with a valid result, return false
-        if (inputs[i].value !== '0.5' && inputs[i].value !== '0' && inputs[i].value !== '1') {
-            return false;
-        }
+  const inputs = document.querySelectorAll('#opponentsTableBody input');
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].value !== '0.5' && inputs[i].value !== '0' && inputs[i].value !== '1') {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
+// Function to handle save button click
 function handleSaveButtonClick() {
-  // Check if the table is full
   if (isTableFull()) {
     // Update player score reports
     updatePlayerScoreReport();
@@ -257,7 +232,7 @@ function handleSaveButtonClick() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(players) // Send the players array
+      body: JSON.stringify(players)
     })
     .then(response => {
       if (response.ok) {
@@ -278,30 +253,25 @@ function handleSaveButtonClick() {
   }
 }
 
-
-  // Function to update player score reports
-  function updatePlayerScoreReport() {
-    const tableRows = document.querySelectorAll('#opponentsTableBody tr');
-    tableRows.forEach((row, index) => {
-      const playerName = row.querySelector('td').textContent; // Get player name
-      const matchResults = Array.from(row.querySelectorAll('input')).map(input => input.value); // Get match results
-      players[index].scoreReport = matchResults; // Update player score report in the players array
-    });
-    console.log(players);
-  }
-
-  // Show save button when the table is full
-  document.addEventListener('input', function() {
-    const saveButton = document.getElementById('saveButton');
-    if (isTableFull()) {
-      saveButton.style.display = 'block';
-    } else {
-      saveButton.style.display = 'none';
-    }
+// Function to update player score reports
+function updatePlayerScoreReport() {
+  const tableRows = document.querySelectorAll('#opponentsTableBody tr');
+  tableRows.forEach((row, index) => {
+    const playerName = row.querySelector('td').textContent;
+    const matchResults = Array.from(row.querySelectorAll('input')).map(input => input.value);
+    players[index].scoreReport = matchResults;
   });
+}
 
-  // Add click event listener to the save button
-  document.getElementById('saveButton').addEventListener('click', handleSaveButtonClick);
+// Show save button when all match results are filled
+document.addEventListener('input', function() {
+  const saveButton = document.getElementById('saveButton');
+  saveButton.style.display = isTableFull() ? 'block' : 'none';
+});
+
+// Add click event listener to the save button
+document.getElementById('saveButton').addEventListener('click', handleSaveButtonClick);
+
 
   // Call generateOpponentsTable after defining the event listeners
   generateOpponentsTable();
