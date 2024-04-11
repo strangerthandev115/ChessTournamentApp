@@ -179,6 +179,7 @@
   let sections = 1; // Set the start num of sections to 1
   let players = []; // Declare players array
   let dropPlayers =[];
+  let maxSection = 0;
 
   function displayPlayers() {
     const playersList = document.getElementById('playersList');
@@ -189,7 +190,7 @@
     const showQuickRating = document.getElementById('showQuickRating').checked;
 
     // Determine the maximum section number from player data
-    let maxSection = 0;
+
     players.forEach(player => {
         if (player.section > maxSection) {
             maxSection = player.section;
@@ -438,6 +439,19 @@ function updatePlayerSections(updatedPlayers) {
     })
     .catch(error => console.error('Error updating player sections:', error));
 }
+
+function updateSectionCount() {
+    const sectionCountInput = document.getElementById('sectionCount');
+    const newSectionCount = parseInt(sectionCountInput.value);
+
+    if (newSectionCount >= 1 && newSectionCount <= 10) {
+        maxSection = newSectionCount;
+        displayPlayers(); // Update the display with the new section count
+    } else {
+        alert("Please enter a number between 1 and 10 for the number of sections.");
+    }
+}
+
 
 
 
