@@ -7,7 +7,7 @@ let players = [
         rapidRating: 1000,
         section: 1,
         matchInfo: [],
-        scoreReport: []
+        scoreReport: [0,0]
     },
     {
         id: 10000002,
@@ -17,27 +17,17 @@ let players = [
         rapidRating: 9999,
         section: 1,
         matchInfo: [],
-        scoreReport: []
+        scoreReport: [0,0]
     },
     {
         id: 10000003,
-        fname: "Joe",
-        lname: "Shmo",
-        quickRating: 1800,
-        rapidRating: 1000,
-        section: 2,
-        matchInfo: [],
-        scoreReport: []
-    },
-    {
-        id: 10000004,
-        fname: "Low",
-        lname: "Hobo",
-        quickRating: '9999',
+        fname: "Josh",
+        lname: "Striker",
+        quickRating: 9999,
         rapidRating: 9999,
-        section: 2,
+        section: '1',
         matchInfo: [],
-        scoreReport: []
+        scoreReport: [0,1,]
     }*/
 ];
 
