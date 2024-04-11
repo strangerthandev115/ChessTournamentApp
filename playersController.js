@@ -1,5 +1,5 @@
 let players = [
-    {
+   /* {
         id: 10000001,
         fname: "John",
         lname: "Doe",
@@ -13,7 +13,7 @@ let players = [
         id: 10000002,
         fname: "Jane",
         lname: "Smith",
-        quickRating: 9999,
+        quickRating: '9999',
         rapidRating: 9999,
         section: 1,
         matchInfo: [],
@@ -23,62 +23,22 @@ let players = [
         id: 10000003,
         fname: "Joe",
         lname: "Shmo",
-        quickRating: 9999,
-        rapidRating: 9999,
+        quickRating: 1800,
+        rapidRating: 1000,
         section: 2,
         matchInfo: [],
         scoreReport: []
     },
     {
         id: 10000004,
-        fname: "Jim",
-        lname: "Shoe",
-        quickRating: 9999,
+        fname: "Low",
+        lname: "Hobo",
+        quickRating: '9999',
         rapidRating: 9999,
         section: 2,
         matchInfo: [],
         scoreReport: []
-    },
-    {
-        id: 10000005,
-        fname: "Jimmy",
-        lname: "Stone",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: 1,
-        matchInfo: [],
-        scoreReport: []
-    },
-    {
-        id: 10000006,
-        fname: "Josh",
-        lname: "Striker",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: 1,
-        matchInfo: [],
-        scoreReport: []
-    },
-    {
-        id: 10000007,
-        fname: "Jake",
-        lname: "Stilts",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: 1,
-        matchInfo: [],
-        scoreReport: []
-    },
-    {
-        id: 10000008,
-        fname: "Jermaine",
-        lname: "Snitch",
-        quickRating: 9999,
-        rapidRating: 9999,
-        section: 1,
-        matchInfo: [],
-        scoreReport: []
-    }
+    }*/
 ];
 
 function receivePlayerData(playerData) {
@@ -124,10 +84,25 @@ function updatePlayerScoreReport(playerID, newSecoreReport) {
 }
 
 
+function deletePlayerData(playerData) {
+    if(playerData.id === undefined || playerData.fname === undefined || playerData.lname === undefined) {
+        throw new Error('Invalid player data');
+    }
+    const playerIndex = players.findIndex(player => player.id === playerData.id);
+
+    if (playerIndex !== -1) {
+        // Remove the player from the players array
+        players.splice(playerIndex, 1);
+        console.log("Player successfully deleted");
+        console.log(players); // Log the updated players array
+    } else {
+        console.log("Player not found");
+    }
+}
 
 module.exports = {
     receivePlayerData,
-    //sendSamplePlayerData,
+    deletePlayerData,
     sendPlayerData,
     updatePlayerSection,
     updatePlayerScoreReport

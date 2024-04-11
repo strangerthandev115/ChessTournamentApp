@@ -91,6 +91,17 @@ app.post('/updatePlayerScoreReports', (req, res) => {
   res.status(200).send('Player score reports updated successfully');
 });
 
+// Route to delete players
+app.post('/deletePlayers', (req, res) => {
+  const playersToDelete = req.body;
+
+  playersToDelete.forEach(player => {
+      playersController.deletePlayerData(player); // Pass the player data directly
+  });
+
+  res.status(200).send('Players successfully deleted');
+});
+
 app.post('/dbfGenerator', async (req, res) => {
   try {
       dbfController.writeTS();
