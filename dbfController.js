@@ -1,14 +1,56 @@
 const { DBFFile } = require('dbffile');
+var fs = require('fs');
+
+async function deletePreviousDBFs() {
+    try {
+        const filesToDelete = ["tsexport.dbf", "tdexport.dbf", "thexport.dbf"];
+
+        // Loop through each file name
+        for (const file of filesToDelete) {
+            // Check if the file exists
+            fs.access(`./dbfGenerator/${file}`, fs.constants.F_OK, (err) => {
+                if (err) {
+                    console.log(`${file} does not exist`);
+                } else {
+                    // Delete the file
+                    fs.unlink(`./dbfGenerator/${file}`, (err) => {
+                        if (err) {
+                            console.error(`Error deleting ${file}:`, err);
+                            return; // Exit the function if there's an error deleting the file
+                        }
+                        console.log(`${file} deleted successfully`);
+                    });
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}
+
+// Example usage
+deletePreviousDBFs();
+
 
 // This Function creates the necessary tdexport.df file
-function writeTD()
+async function writeTD()
 {
     let fieldDescriptors = [
-        { name: 'D_EVENT_ID', type: 'I', size: 255 },
-        { name: 'D_SEC_NUM', type: 'I', size: 255 },
-        { name: 'D_PAIR_NUM', type: 'I', size: 255 },
-        { name: 'D_REC_SEQ', type: 'I', size: 255 },
-        { name: 'D_MEM_ID', type: 'I', size: 255 }
+        { name: 'D_EVENT_ID', type: 'C', size: 9 },
+        { name: 'D_SEC_NUM', type: 'C', size: 2 },
+        { name: 'D_PAIR_NUM', type: 'C', size: 4 },
+        { name: 'D_REC_SEQ', type: 'C', size: 1 },
+        { name: 'D_MEM_ID', type: 'C', size: 8 },
+        { name: 'D_RND01', type: 'C', size: 5 },
+        { name: 'D_RND02', type: 'C', size: 5 },
+        { name: 'D_RND03', type: 'C', size: 5 },
+        { name: 'D_RND04', type: 'C', size: 5 },
+        { name: 'D_RND05', type: 'C', size: 5 },
+        { name: 'D_RND06', type: 'C', size: 5 },
+        { name: 'D_RND07', type: 'C', size: 5 },
+        { name: 'D_RND08', type: 'C', size: 5 },
+        { name: 'D_RND09', type: 'C', size: 5 },
+        { name: 'D_RND10', type: 'C', size: 5 }
     ];
     let samplePlayers = [
         {
@@ -52,6 +94,19 @@ function writeTD()
             D_SEC_NUM: 221217001
         }
     ];
+
+    // Delete the previous DBF
+    await deletePreviousDBFs();
+
+    // Create the new dbf file
+    try {
+        let dbf = await DBFFile.create('./dbfGenerator/tsexport.dbf', fieldDescriptors);
+        console.log('DBF file created.');
+        dbf.appendRecords(records);
+        console.log(`${records.length} records added.`);
+    } catch (err) {
+        console.error('Error creating new DBF file:', err);
+    }
 }
 
 // This Function creates the necessary tsexport.df file
@@ -107,32 +162,53 @@ async function writeTS()
         // Add more records as needed
     ];
 
-    let dbf = await DBFFile.create('./dbfGenerator/output.dbf', fieldDescriptors);
-    console.log('DBF file created.');
-    dbf.appendRecords(records);
-    console.log(`${records.length} records added.`);
+    // Delete the previous DBF
+    await deletePreviousDBFs();
+
+    // Create the new dbf file
+    try {
+        let dbf = await DBFFile.create('./dbfGenerator/tsexport.dbf', fieldDescriptors);
+        console.log('DBF file created.');
+        dbf.appendRecords(records);
+        console.log(`${records.length} records added.`);
+    } catch (err) {
+        console.error('Error creating new DBF file:', err);
+    }
 }
 
 // This Function creates the necessary thexport.df file
-function writeTH()
+async function writeTH()
 {
     let fieldDescriptors = [
-        { name: 'H_EVENT_ID', type: 'I', size: 255 },
-        { name: 'H_NAME_ID', type: 'C', size: 255 },
-        { name: 'H_TOT_SECT', type: 'I', size: 255 },
-        { name: 'H_BEG_DATE', type: 'D', size: 255 },
-        { name: 'H_END_DATE', type: 'D', size: 255 },
-        { name: 'H_RCV_DATE', type: 'D', size: 255 },
-        { name: 'H_ENT_DATE', type: 'D', size: 255 },
-        { name: 'H_AFF_IDE', type: 'C', size: 255 },
-        { name: 'H_CITYDE', type: 'C', size: 255 },
-        { name: 'H_STATEE', type: 'C', size: 255 },
-        { name: 'H_ZIPCODE', type: 'I', size: 255 },
-        { name: 'H_COUNTRY', type: 'C', size: 255 },
-        { name: 'H_SENDCROS', type: 'C', size: 255 },
-        { name: 'H_SCHOLAST', type: 'C', size: 255 },
-        { name: 'H_SECREC01', type: 'I', size: 255 }
+        { name: 'H_EVENT_ID', type: 'C', size: 9 },
+        { name: 'H_NAME_ID', type: 'C', size: 35 },
+        { name: 'H_TOT_SECT', type: 'N', size: 2.0 },
+        { name: 'H_BEG_DATE', type: 'D', size: 8 },
+        { name: 'H_END_DATE', type: 'D', size: 8 },
+        { name: 'H_RCV_DATE', type: 'D', size: 8 },
+        { name: 'H_ENT_DATE', type: 'D', size: 8 },
+        { name: 'H_AFF_IDE', type: 'C', size: 8 },
+        { name: 'H_CITYDE', type: 'C', size: 21 },
+        { name: 'H_STATEE', type: 'C', size: 2 },
+        { name: 'H_ZIPCODE', type: 'I', size: 10 },
+        { name: 'H_COUNTRY', type: 'C', size: 21 },
+        { name: 'H_SENDCROS', type: 'C', size: 1 },
+        { name: 'H_SCHOLAST', type: 'C', size: 1 },
+        { name: 'H_SECREC01', type: 'N', size: 7.0 }
     ];
+
+    // Delete the previous DBF
+    await deletePreviousDBFs();
+
+    // Create the new dbf file
+    try {
+        let dbf = await DBFFile.create('./dbfGenerator/thexport.dbf', fieldDescriptors);
+        console.log('DBF file created.');
+        dbf.appendRecords(records);
+        console.log(`${records.length} records added.`);
+    } catch (err) {
+        console.error('Error creating new DBF file:', err);
+    }
 }
 
 // This Function calls the functions to create the dbf files
@@ -148,5 +224,6 @@ function createDBFFiles()
 
 module.exports = {
     createDBFFiles,
-    writeTS
+    writeTS,
+    deletePreviousDBFs
 };
