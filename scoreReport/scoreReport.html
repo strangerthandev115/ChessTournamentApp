@@ -203,18 +203,27 @@ function generateOpponentsTable(sectionPlayers, sectionName) {
 function updateOpponentScore(playerIndex, roundIndex, result) {
   const opponentIndex = (playerIndex + 1) % players.length;
   const opponentRow = document.getElementById('opponentsTableBody').children[opponentIndex];
-  const opponentInput = opponentRow.children[roundIndex + 1].children[0]; // +1 to skip player name cell
-  if (opponentInput) {
-    opponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
+  
+  // Check if opponentRow is defined before accessing its children
+  if (opponentRow) {
+    const opponentInput = opponentRow.children[roundIndex + 1].children[0]; // +1 to skip player name cell
+    if (opponentInput) {
+      opponentInput.value = (result === 0.5) ? '0.5' : (1 - result).toString();
+    }
   }
 }
 
+
 // Function to check if the table is full
 function isTableFull() {
-  const inputs = document.querySelectorAll('#opponentsTableBody input');
-  for (let i = 0; i < inputs.length; i++) {
-    if (inputs[i].value !== '0.5' && inputs[i].value !== '0' && inputs[i].value !== '1') {
-      return false;
+  const sectionTables = document.querySelectorAll('.table');
+  
+  for (let i = 0; i < sectionTables.length; i++) {
+    const inputs = sectionTables[i].querySelectorAll('input');
+    for (let j = 0; j < inputs.length; j++) {
+      if (inputs[j].value !== '0.5' && inputs[j].value !== '0' && inputs[j].value !== '1') {
+        return false;
+      }
     }
   }
   return true;
@@ -255,13 +264,27 @@ function handleSaveButtonClick() {
 
 // Function to update player score reports
 function updatePlayerScoreReport() {
-  const tableRows = document.querySelectorAll('#opponentsTableBody tr');
-  tableRows.forEach((row, index) => {
-    const playerName = row.querySelector('td').textContent;
-    const matchResults = Array.from(row.querySelectorAll('input')).map(input => input.value);
-    players[index].scoreReport = matchResults;
+  const sectionTables = document.querySelectorAll('.table');
+  
+  sectionTables.forEach(sectionTable => {
+    const prevElementSibling = sectionTable.previousElementSibling;
+    if (prevElementSibling) { // Check if previous element sibling exists
+      const sectionName = prevElementSibling.textContent;
+      const tableRows = sectionTable.querySelectorAll('tbody tr');
+
+      tableRows.forEach((row, index) => {
+        const playerName = row.querySelector('td').textContent;
+        const matchResults = Array.from(row.querySelectorAll('input')).map(input => input.value);
+        
+        // Find the player in the players array and update their score report
+        const player = sections[sectionName][index];
+        player.scoreReport = matchResults;
+      });
+    }
   });
 }
+
+
 
 // Show save button when all match results are filled
 document.addEventListener('input', function() {
