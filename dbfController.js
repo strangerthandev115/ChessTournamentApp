@@ -80,6 +80,26 @@ async function writeTD(players, eventID)
         records.push(record);
     });
 
+    players.forEach((player, index) => {
+        player.matchInfo.forEach((opponentId, opponentIndex) => {
+            let opponent = records.find(p => p.D_MEM_ID === String(opponentId));
+            if (opponent) {
+                let opponentPairNum = opponent.D_PAIR_NUM;
+                let score = player.scoreReport[opponentIndex];
+                // Calculate the appropriate D_RND index with 2 digits
+                let rndIndex = (opponentIndex + 1).toString().padStart(2, '0');
+                if (score === 1) {
+                    records[index][`D_RND${rndIndex}`] = `W${opponentPairNum}`;
+                } else if (score === 0) {
+                    records[index][`D_RND${rndIndex}`] = `L${opponentPairNum}`;
+                } else {
+                    records[index][`D_RND${rndIndex}`] = `D${opponentPairNum}`;
+                }
+            }
+        });
+    });
+    
+
     // Delete the previous DBF
     await deletePreviousDBFs();
 
