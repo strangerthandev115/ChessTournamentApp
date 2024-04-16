@@ -93,10 +93,17 @@
         </div>
       </nav>
 
-<div class="container">
-  <h2>Chess Tournament Scheduler</h2>
-  <div id="schedule"></div>
 
+  <div class="container">
+    <h2>Chess Tournament Scheduler</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div id="schedule"></div>
+      </div>
+    </div>
+  </div>
+
+  
   <script>
     let players = [];
     let sections;
@@ -147,16 +154,18 @@
   const sectionSize = Math.floor(numPlayers / numSections);
   let remainingPlayers = numPlayers % numSections;
 
-  // Add a bye player if the number of players is odd
+  // Handle odd number of players
   if (numPlayers % 2 === 1) {
-    players.push('Bye');
+    players.push({ fname: 'Bye', lname: '' });
   }
 
   for (let section = 1; section <= numSections; section++) {
     scheduleContainer.innerHTML += `<h3>Section ${section}:</h3>`;
     const sectionPlayers = players.filter(player => player.section === section); // Filter players by section
+
+    // Add bye player if needed
     if (remainingPlayers > 0) {
-      sectionPlayers.push('Bye');
+      sectionPlayers.push({ fname: 'Bye', lname: '' });
       remainingPlayers--;
     }
 
@@ -164,16 +173,35 @@
 
     for (let round = 0; round < sectionPlayers.length - 1; round++) {
       scheduleContainer.innerHTML += `<h4>Round ${round + 1}:</h4>`;
+      const roundMatchesContainer = document.createElement('div');
+      roundMatchesContainer.className = 'row row-cols-1 row-cols-md-2 g-4';
+
       for (let board = 0; board < matchups[round].length; board++) {
         const [player1, player2] = matchups[round][board];
         const color1 = round % 2 === 0 ? 'W' : 'B';
         const color2 = round % 2 === 0 ? 'B' : 'W';
         // Access first and last names using correct keys
-        scheduleContainer.innerHTML += `Board ${board + 1}: ${player1.fname} ${player1.lname} (${color1}) vs ${player2.fname} ${player2.lname} (${color2})<br>`;
+        const name1 = player1.fname !== 'Bye' ? `${player1.fname} ${player1.lname}` : 'Bye';
+        const name2 = player2.fname !== 'Bye' ? `${player2.fname} ${player2.lname}` : 'Bye';
+
+        const matchCard = document.createElement('div');
+        matchCard.className = 'col';
+        matchCard.innerHTML = `
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Board ${board + 1}</h5>
+              <p class="card-text">${name1} (${color1}) vs ${name2} (${color2})</p>
+            </div>
+          </div>
+        `;
+        roundMatchesContainer.appendChild(matchCard);
       }
+      scheduleContainer.appendChild(roundMatchesContainer);
     }
   }
 }
+
+
 
 
 
