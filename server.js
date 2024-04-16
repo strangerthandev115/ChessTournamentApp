@@ -104,7 +104,8 @@ app.post('/deletePlayers', (req, res) => {
 
 app.post('/dbfGenerator', async (req, res) => {
   try {
-      dbfController.writeTS();
+      const eventID = req.body.eventID;
+      dbfController.writeTD(playersController.sendPlayerData(),eventID);
       res.status(200).send('DBF files created successfully');
   } catch (error) {
       console.error('Error creating DBF files:', error);

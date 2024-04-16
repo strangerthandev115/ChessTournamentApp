@@ -33,7 +33,7 @@ deletePreviousDBFs();
 
 
 // This Function creates the necessary tdexport.df file
-async function writeTD()
+async function writeTD(players, eventID)
 {
     let fieldDescriptors = [
         { name: 'D_EVENT_ID', type: 'C', size: 9 },
@@ -52,55 +52,40 @@ async function writeTD()
         { name: 'D_RND09', type: 'C', size: 5 },
         { name: 'D_RND10', type: 'C', size: 5 }
     ];
-    let samplePlayers = [
-        {
-            D_MEM_ID: 10000001,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000002,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000003,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000004,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000005,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000006,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000007,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000008,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000009,
-            D_SEC_NUM: 221217001
-        },
-        {
-            D_MEM_ID: 10000010,
-            D_SEC_NUM: 221217001
-        }
-    ];
+
+    var records = [];
+
+    // Loop through each player
+    players.forEach((player,index) => {
+        // Create a record object
+        let record = {
+            D_EVENT_ID: eventID,
+            D_SEC_NUM: '1',
+            D_PAIR_NUM: String(index + 1).padStart(4, ' '),
+            D_REC_SEQ: '1',
+            D_MEM_ID: String(player.id),
+            D_RND01: '    0',
+            D_RND02: '    0',
+            D_RND03: '    0',
+            D_RND04: '    0',
+            D_RND05: '    0',
+            D_RND06: '    0',
+            D_RND07: '    0',
+            D_RND08: '    0',
+            D_RND09: '    0',
+            D_RND10: '    0'
+        };
+
+        // Add the record to the records array
+        records.push(record);
+    });
 
     // Delete the previous DBF
     await deletePreviousDBFs();
 
     // Create the new dbf file
     try {
-        let dbf = await DBFFile.create('./dbfGenerator/tsexport.dbf', fieldDescriptors);
+        let dbf = await DBFFile.create('./dbfGenerator/tdexport.dbf', fieldDescriptors);
         console.log('DBF file created.');
         dbf.appendRecords(records);
         console.log(`${records.length} records added.`);
@@ -224,6 +209,6 @@ function createDBFFiles()
 
 module.exports = {
     createDBFFiles,
-    writeTS,
+    writeTD,
     deletePreviousDBFs
 };
