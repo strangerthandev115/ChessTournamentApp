@@ -119,11 +119,12 @@
     <label for="totalPlayers" class="form-label">Total Players</label>
     <input type="number" class="form-control" id="totalPlayers" required>
   </div>
+-->
   <div class="mb-3" id="totalPrizeFundDiv">
     <label for="totalPrizeFund" class="form-label">Total Prize Fund ($)</label>
     <input type="number" class="form-control" id="totalPrizeFund" required>
   </div>
--->
+
   <button id="createTableButton"type="button" class="btn btn-primary" onclick="BuildTable()">Create Table</button>
 </form>
 
@@ -259,11 +260,14 @@ function BuildTable() {
     return totalScoreB - totalScoreA;
   });
 
-  // Calculate prize fund
+  /* Calculate prize fund
   var numPlayers = players.length;
   var costPerPlayer = numPlayers <= 24 ? 6 : 8;
   var prizeFund = numPlayers * costPerPlayer;
+*/
 
+  var totalPrizeFundElement = document.getElementById("totalPrizeFund");
+  var prizeFund = parseFloat(totalPrizeFundElement.value);
   // Create the table HTML
   var tableHTML = '<table class="table table-bordered">' +
     '<thead class="thead-dark">' +
@@ -273,8 +277,7 @@ function BuildTable() {
     '<tr>' +
     '<th scope="col">Place</th>' +
     '<th scope="col">Name</th>' +
-    '<th scope="col">Rating</th>' +
-    '<th scope="col">Total Score</th>' +
+    '<th scope="col">Match Results</th>' +
     '<th scope="col">Prize</th>' +
     '</tr>' +
     '</thead>' +
@@ -299,12 +302,17 @@ function BuildTable() {
     nameTd.textContent = player.fname + " " + player.lname;
     tr.appendChild(nameTd);
 
+    /*
     var ratingTd = document.createElement("td");
     ratingTd.textContent = player.quickRating;
     tr.appendChild(ratingTd);
+    */
 
     var totalScoreTd = document.createElement("td");
-    var totalScore = player.scoreReport.reduce((total, score) => total + score, 0);
+    var totalScore = 0;
+    for(var j = 0; j < player.scoreReport.length; j++){
+      totalScore += parseInt(player.scoreReport[j]);
+    }
     totalScoreTd.textContent = totalScore;
     tr.appendChild(totalScoreTd);
 
