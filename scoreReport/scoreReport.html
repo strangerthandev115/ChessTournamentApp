@@ -235,6 +235,8 @@ function handleSaveButtonClick() {
     // Update player score reports
     updatePlayerScoreReport();
 
+    console.log(players);
+
     // Send a POST request to update player data
     fetch('/updatePlayerScoreReports', {
       method: 'POST',

@@ -32,3 +32,13 @@ button.addEventListener('click', async () => {
         console.error('An error occurred:', error);
     }
 });
+
+function GetPlayerData(){
+    let players = [];
+    fetch('/getPlayers')
+      .then(response => response.json())
+      .then(data => {
+        players = data;
+        console.log(players);
+    });
+}
