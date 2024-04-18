@@ -311,7 +311,7 @@ function BuildTable() {
     var totalScoreTd = document.createElement("td");
     var totalScore = 0;
     for(var j = 0; j < player.scoreReport.length; j++){
-      totalScore += parseInt(player.scoreReport[j]);
+      totalScore += parseFloat(player.scoreReport[j]);
     }
     totalScoreTd.textContent = totalScore;
     tr.appendChild(totalScoreTd);
